@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "pvp_enhancements",
+  "version": "${version}",
+  "name": "Max's PVP Enhancements",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/pvp_enhancements/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "minmaximilian.pvp_enhancements.fabric.ExampleModFabric"
+    ]
+  },
+  "mixins": [
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.2"
+  }
+}

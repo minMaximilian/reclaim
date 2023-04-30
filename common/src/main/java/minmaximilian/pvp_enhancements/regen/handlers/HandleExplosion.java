@@ -1,32 +1,29 @@
 package minmaximilian.pvp_enhancements.regen.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
 import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import minmaximilian.pvp_enhancements.regen.ActiveChunkData;
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class HandleExplosion {
 	private static final int delayInTicksBeforeHealingDamage = PvPEnhancementsConfig.COMMON.delayInTicksBeforeHealingDamage.get();
 	private static final int ticksBetweenHeals = PvPEnhancementsConfig.COMMON.ticksBetweenHeals.get();
 	private static final boolean healCreeperExplosions = PvPEnhancementsConfig.COMMON.healCreeperExplosions.get();
-	public static void handleExplosion(Level level, List<BlockPos> blockPosList, Entity entity, LivingEntity mob) {
+	public static void handleExplosion(Level level, List<BlockPos> blockPosList, Entity entity) {
 		if (!healCreeperExplosions && entity.getType() == EntityType.CREEPER) return;
 
 		List<BlockTracker> blockTrackerList = blockPosList.stream()
@@ -55,14 +52,12 @@ public class HandleExplosion {
 	}
 
 	private static BlockTracker createBlockTrackers(Level level, BlockPos blockPos) {
-		ResourceLocation resourceLocation = level.dimension().location();
 		BlockEntity blockEntity = level.getBlockEntity(blockPos);
 		CompoundTag compoundTag = null;
 		if (blockEntity != null) {
 			compoundTag = blockEntity.saveWithFullMetadata();
 		}
 		return new BlockTracker(
-			resourceLocation,
 			level.getBlockState(blockPos),
 			compoundTag,
 			blockPos,

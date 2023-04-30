@@ -15,17 +15,13 @@ public class BlockTracker {
     private BlockPos blockPos;
     private int ticksLeft;
 
-    public BlockTracker(ResourceLocation resourceLocation, BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos, int ticksLeft) {
-        this.resourceLocation = resourceLocation;
+    public BlockTracker(BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos, int ticksLeft) {
         this.blockState = blockState;
         this.compoundTag = compoundTag;
         this.blockPos = blockPos;
         this.ticksLeft = ticksLeft;
     }
 
-    public ResourceLocation getResourceLocation() {
-        return resourceLocation;
-    }
 
     public BlockState getBlockState() {
         return blockState;

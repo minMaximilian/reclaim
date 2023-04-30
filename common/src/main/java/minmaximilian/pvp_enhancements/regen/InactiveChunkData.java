@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ActiveChunkData {
+public class InactiveChunkData {
     private static ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> unhealedBlocks = new ConcurrentHashMap<>();
 
     public static ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> getDamagedBlocks() {
@@ -59,5 +59,4 @@ public class ActiveChunkData {
     public static void removeChunk(ResourceLocation resourceLocation, ChunkPos pos) {
         getResourceLocation(resourceLocation).remove(pos);
     }
-
 }

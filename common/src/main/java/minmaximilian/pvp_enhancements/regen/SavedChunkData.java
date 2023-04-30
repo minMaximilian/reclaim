@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -30,12 +30,49 @@ public class SavedChunkData extends SavedData {
         this.chunkData = chunkData;
     }
 
-    public static SavedChunkData get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(
-            SavedChunkData::load,
-            SavedChunkData::new,
-            MOD_ID
-        );
+    public static SavedChunkData load(MinecraftServer server) {
+        return server.overworld()
+            .getDataStorage()
+            .computeIfAbsent(
+                SavedChunkData::load,
+                SavedChunkData::new,
+                MOD_ID
+            );
+    }
+
+    @Override
+    public CompoundTag save(CompoundTag compoundTag) {
+        ListTag list = new ListTag();
+        for (Map.Entry<ChunkPos, List<BlockTracker>> entry : chunkData.entrySet()) {
+            CompoundTag entryTag = new CompoundTag();
+            entryTag.putLong("chunkPos", entry.getKey().toLong());
+            for (BlockTracker blockTracker : entry.getValue()) {
+                entryTag.put("chunkData", blockTrackerToNbt(blockTracker));
+            }
+            list.add(entryTag);
+        }
+        compoundTag.put("chunkData", list);
+        return compoundTag;
+    }
+
+    public Map<ChunkPos, List<BlockTracker>> getChunkData() {
+        return chunkData;
+    }
+
+    private static SavedChunkData load(CompoundTag compoundTag) {
+        Map<ChunkPos, List<BlockTracker>> chunkData = new ConcurrentHashMap<>();
+        ListTag list = compoundTag.getList("chunkData", Tag.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) {
+            CompoundTag entry = list.getCompound(i);
+            ChunkPos chunkPos = new ChunkPos(entry.getLong("chunkPos"));
+            List<BlockTracker> blockTrackerList = entry
+                .getList("chunkPos", compoundTag.TAG_COMPOUND)
+                .stream()
+                .map(e -> nbtToBlockTracker((CompoundTag) e))
+                .collect(Collectors.toList());
+            chunkData.put(chunkPos, blockTrackerList);
+        }
+        return new SavedChunkData(chunkData);
     }
 
     private static CompoundTag blockTrackerToNbt(BlockTracker blockTracker) {
@@ -59,37 +96,4 @@ public class SavedChunkData extends SavedData {
 
         return new BlockTracker(blockState, blockNbt, blockPos, ticksLeft);
     }
-
-    @Override
-    public CompoundTag save(CompoundTag compoundTag) {
-        ListTag list = new ListTag();
-        for (Map.Entry<ChunkPos, List<BlockTracker>> entry : chunkData.entrySet()) {
-            CompoundTag entryTag = new CompoundTag();
-            entryTag.putLong("chunkPos", entry.getKey().toLong());
-            for (BlockTracker blockTracker: entry.getValue()) {
-                entryTag.put("chunkData", blockTrackerToNbt(blockTracker));
-            }
-            list.add(entryTag);
-        }
-        compoundTag.put("chunkData", list);
-        return compoundTag;
-    }
-
-    private static SavedChunkData load(CompoundTag compoundTag) {
-        Map<ChunkPos, List<BlockTracker>> chunkData = new ConcurrentHashMap<>();
-        ListTag list = compoundTag.getList("chunkData", Tag.TAG_COMPOUND);
-        for (int i = 0; i < list.size(); i++) {
-            CompoundTag entry = list.getCompound(i);
-            ChunkPos chunkPos = new ChunkPos(entry.getLong("chunkPos"));
-            List<BlockTracker> blockTrackerList = entry
-                .getList("chunkPos", compoundTag.TAG_COMPOUND)
-                .stream()
-                .map(e -> nbtToBlockTracker((CompoundTag) e))
-                .collect(Collectors.toList());
-            chunkData.put(chunkPos, blockTrackerList);
-        }
-        return new SavedChunkData(chunkData);
-    }
-
-
 }

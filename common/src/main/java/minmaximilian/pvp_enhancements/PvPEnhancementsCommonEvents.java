@@ -32,5 +32,7 @@ public class PvPEnhancementsCommonEvents {
 
 	}
 
-
+	public static void onServerStarting(LevelAccessor levelAccessor) {
+		PvPEnhancements.SAVED_CHUNKS.levelLoaded(levelAccessor);
+	}
 }

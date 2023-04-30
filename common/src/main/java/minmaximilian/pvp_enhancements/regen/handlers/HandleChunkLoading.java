@@ -1,9 +1,5 @@
 package minmaximilian.pvp_enhancements.regen.handlers;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
 import minmaximilian.pvp_enhancements.regen.ActiveChunkData;
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.core.BlockPos;
@@ -13,6 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class HandleChunkLoading {
 	public static void handleChunkLoading(LevelAccessor level, ChunkAccess chunk, CompoundTag data) {
@@ -41,11 +41,15 @@ public class HandleChunkLoading {
 		List<BlockTracker> savedBlocks = ActiveChunkData.getChunk(resourceLocation, chunk.getPos());
 
 		AtomicInteger i = new AtomicInteger();
-		CompoundTag chunkCompoundTag = savedBlocks
+		List<CompoundTag> compoundTags = savedBlocks
 			.stream()
 			.map(blockTracker -> blockTrackerToNbt(blockTracker))
-			.reduce(new CompoundTag(), (compoundTagAccumulator, compoundTag) ->
-				(CompoundTag) compoundTagAccumulator.put(String.valueOf(i.getAndIncrement()), compoundTag));
+			.collect(Collectors.toList());
+
+		CompoundTag chunkCompoundTag = new CompoundTag();
+		for (CompoundTag compoundTag : compoundTags) {
+			chunkCompoundTag.put(String.valueOf(i.getAndIncrement()), compoundTag);
+		}
 
 		data.put("needsHealing", chunkCompoundTag);
 	}
@@ -62,6 +66,7 @@ public class HandleChunkLoading {
 
 		return compoundTag;
 	}
+
 	private static BlockTracker nbtToBlockTracker(String key, CompoundTag chunkData, ResourceLocation resourceLocation) {
 		CompoundTag compoundTag = chunkData.getCompound(key);
 		BlockState blockState = NbtUtils.readBlockState(compoundTag.getCompound("blockState"));

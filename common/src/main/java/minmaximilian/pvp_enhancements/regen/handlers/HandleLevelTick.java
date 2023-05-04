@@ -4,9 +4,12 @@ import static minmaximilian.pvp_enhancements.regen.util.LegalPlacements.filterBl
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import minmaximilian.pvp_enhancements.regen.ActiveChunkData;
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.ChunkPos;
@@ -21,6 +24,18 @@ public class HandleLevelTick {
         for (Map.Entry<ChunkPos, List<BlockTracker>> entry : dimensionChunks.entrySet()) {
             if (handleChunkList(level, entry.getValue()))
                 ActiveChunkData.removeChunk(level.dimension().location(), entry.getKey());
+        }
+    }
+
+    public static void healChunks() {
+        ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> damagedBlocks = ActiveChunkData.getDamagedBlocks();
+        AtomicInteger i = new AtomicInteger(1);
+        for (Map<ChunkPos, List<BlockTracker>> chunkPosListMap : damagedBlocks.values()) {
+            for (List<BlockTracker> list : chunkPosListMap.values()) {
+                list.forEach(blockTracker ->
+                    blockTracker.setTicksLeft(i.getAndIncrement())
+                );
+            }
         }
     }
 

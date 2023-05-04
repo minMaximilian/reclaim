@@ -2,8 +2,8 @@ package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
@@ -17,11 +17,15 @@ public class PvPEnhancementsCommonForgeEvents {
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onWorldTick);
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onChunkLoad);
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onChunkUnload);
+        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onRegisterCommands);
+    }
+
+    private static void onRegisterCommands(RegisterCommandsEvent event) {
+        PvPEnhancementsCommonEvents.onLoadCommands(event.getDispatcher());
     }
 
     public static void onServerStarting(LevelEvent.Load event) {
-        LevelAccessor world = event.getLevel();
-        PvPEnhancementsCommonEvents.onServerStarting(world);
+        PvPEnhancementsCommonEvents.onServerStarting(event.getLevel());
     }
 
     public static void onExplosion(ExplosionEvent.Detonate explosionEvent) {

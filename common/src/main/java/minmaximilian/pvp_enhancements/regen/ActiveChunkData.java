@@ -1,18 +1,22 @@
 package minmaximilian.pvp_enhancements.regen;
 
-import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.ChunkPos;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
 
 public class ActiveChunkData {
     private static ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> unhealedBlocks = new ConcurrentHashMap<>();
 
     public static ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> getDamagedBlocks() {
         return unhealedBlocks;
+    }
+
+    public static void setDamagedBlocks(ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> damagedBlocks) {
+        unhealedBlocks = damagedBlocks;
     }
 
     public static boolean containsResourceLocation(ResourceLocation resourceLocation) {
@@ -29,10 +33,6 @@ public class ActiveChunkData {
 
     public static List<BlockTracker> getChunk(ResourceLocation resourceLocation, ChunkPos chunkPos) {
         return unhealedBlocks.get(resourceLocation).get(chunkPos);
-    }
-
-    public static void setDamagedBlocks(ConcurrentHashMap<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> damagedBlocks) {
-        unhealedBlocks = damagedBlocks;
     }
 
     public static void upsertResourceLocation(ResourceLocation resourceLocation) {

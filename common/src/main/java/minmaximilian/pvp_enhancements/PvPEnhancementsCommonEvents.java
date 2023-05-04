@@ -1,15 +1,16 @@
 package minmaximilian.pvp_enhancements;
 
+import java.util.List;
+
 import minmaximilian.pvp_enhancements.regen.handlers.HandleChunkLoading;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleExplosion;
+import minmaximilian.pvp_enhancements.regen.handlers.HandleLevelTick;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-
-import java.util.List;
 
 public class PvPEnhancementsCommonEvents {
 	public static void onExplosion(Level level, List<BlockPos> blockPosList, Entity entity) {
@@ -25,7 +26,7 @@ public class PvPEnhancementsCommonEvents {
 	}
 
 	public static void onLevelTick(Level level) {
-
+		HandleLevelTick.handleLevelTick(level);
 	}
 
 	public static void handlePenetration(BlockPos blockPos, BlockState blockState) {

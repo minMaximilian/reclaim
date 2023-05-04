@@ -1,15 +1,14 @@
 package minmaximilian.pvp_enhancements.regen.util;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
 import java.util.Comparator;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class BlockTracker {
-    private ResourceLocation resourceLocation;
     private BlockState blockState;
     private CompoundTag compoundTag;
     private BlockPos blockPos;
@@ -21,7 +20,6 @@ public class BlockTracker {
         this.blockPos = blockPos;
         this.ticksLeft = ticksLeft;
     }
-
 
     public BlockState getBlockState() {
         return blockState;
@@ -49,7 +47,13 @@ public class BlockTracker {
             BlockPos bPos1 = b1.getBlockPos();
             BlockPos bPos2 = b2.getBlockPos();
 
-            return Integer.compare(bPos1.getY(), bPos2.getY());
+            int yCompare = Integer.compare(bPos1.getY(), bPos2.getY());
+            if (yCompare != 0) return yCompare;
+
+            int xCompare = Integer.compare(bPos1.getX(), bPos2.getX());
+            if (xCompare != 0) return xCompare;
+
+            return Integer.compare(bPos1.getZ(), bPos2.getZ());
         }
     }
 }

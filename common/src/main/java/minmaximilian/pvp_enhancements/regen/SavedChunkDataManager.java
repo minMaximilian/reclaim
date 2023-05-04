@@ -1,12 +1,12 @@
 package minmaximilian.pvp_enhancements.regen;
 
+import java.util.List;
+import java.util.Map;
+
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
-
-import java.util.List;
-import java.util.Map;
 
 public class SavedChunkDataManager {
     private SavedChunkData savedChunkData;

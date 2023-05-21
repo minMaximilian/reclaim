@@ -7,8 +7,6 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.simibubi.create.foundation.config.ConfigBase;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -18,6 +16,13 @@ public class PvPEnhancementsConfig {
 
     public static ConfigBase byType(ModConfig.Type type) {
         return CONFIGS.get(type);
+    }
+
+    public static void registerConfigs(BiConsumer<ModConfig.Type, ForgeConfigSpec> cons) {
+        COMMON = register(PvPEnhancementsCommonConfig::new, ModConfig.Type.COMMON);
+
+        for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
+            cons.accept(pair.getKey(), pair.getValue().specification);
     }
 
     private static <T extends PvPEnhancementsBase> T register(Supplier<T> factory, ModConfig.Type side) {
@@ -31,13 +36,6 @@ public class PvPEnhancementsConfig {
         config.specification = specPair.getRight();
         CONFIGS.put(side, config);
         return config;
-    }
-
-    public static void registerConfigs(BiConsumer<ModConfig.Type, ForgeConfigSpec> cons) {
-        COMMON = register(PvPEnhancementsCommonConfig::new, ModConfig.Type.COMMON);
-
-        for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
-            cons.accept(pair.getKey(), pair.getValue().specification);
     }
 
     public static void onLoad(ModConfig modConfig) {

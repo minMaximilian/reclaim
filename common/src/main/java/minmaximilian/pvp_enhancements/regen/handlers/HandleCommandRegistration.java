@@ -18,7 +18,9 @@ public class HandleCommandRegistration {
     }
 
     private static int forceHealAll(CommandContext<CommandSourceStack> context) {
-        context.getSource().getPlayer().displayClientMessage(Component.translatable("Healing Chunks"), false);
+        context.getSource()
+            .getPlayer()
+            .displayClientMessage(Component.translatable("Healing Chunks"), false);
         HandleLevelTick.healChunks();
         return 1;
     }

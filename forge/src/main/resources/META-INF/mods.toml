@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[43,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "LGPL"
 
 [[mods]]
 modId = "maxs_pvp_enhancements"
 version = "${version}"
-displayName = "Max's PVP Enhancements"
+displayName = "Max's PvP Enhancements"
 authors = "github.com/minMaximilian"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Max's PvP Enhancements, set to make PvP as an event to look forwards to and reduce sadness after destruction.
 '''
 #logoFile = ""
 

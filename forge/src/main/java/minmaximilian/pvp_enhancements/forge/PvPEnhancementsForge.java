@@ -13,7 +13,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(PvPEnhancements.MOD_ID)
 public class PvPEnhancementsForge {
     public PvPEnhancementsForge() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get()
+            .getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         ModLoadingContext mlContext = ModLoadingContext.get();
 

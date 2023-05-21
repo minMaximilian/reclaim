@@ -20,16 +20,16 @@ public class PvPEnhancementsCommonForgeEvents {
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onRegisterCommands);
     }
 
-    private static void onRegisterCommands(RegisterCommandsEvent event) {
-        PvPEnhancementsCommonEvents.onLoadCommands(event.getDispatcher());
-    }
-
     public static void onServerStarting(LevelEvent.Load event) {
         PvPEnhancementsCommonEvents.onServerStarting(event.getLevel());
     }
 
     public static void onExplosion(ExplosionEvent.Detonate explosionEvent) {
-        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(), explosionEvent.getExplosion().getExploder());
+        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(), explosionEvent.getExplosion());
+    }
+
+    public static void onWorldTick(TickEvent.LevelTickEvent event) {
+        PvPEnhancementsCommonEvents.onLevelTick(event.level);
     }
 
     public static void onChunkLoad(ChunkEvent.Load event) {
@@ -40,8 +40,8 @@ public class PvPEnhancementsCommonForgeEvents {
         PvPEnhancementsCommonEvents.onChunkUnload(event.getLevel(), event.getChunk());
     }
 
-    public static void onWorldTick(TickEvent.LevelTickEvent event) {
-        PvPEnhancementsCommonEvents.onLevelTick(event.level);
+    private static void onRegisterCommands(RegisterCommandsEvent event) {
+        PvPEnhancementsCommonEvents.onLoadCommands(event.getDispatcher());
     }
 
     public static void onPenetration() {

@@ -2,11 +2,9 @@ package minmaximilian.pvp_enhancements.regen;
 
 import static minmaximilian.pvp_enhancements.PvPEnhancements.MOD_ID;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.core.BlockPos;
@@ -14,22 +12,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class SavedChunkData extends SavedData {
-    private final Map<ChunkPos, List<BlockTracker>> chunkData;
-
-    private SavedChunkData() {
-        this(new HashMap<>());
-    }
-
-    private SavedChunkData(Map<ChunkPos, List<BlockTracker>> chunkData) {
-        this.chunkData = chunkData;
-    }
-
     public static SavedChunkData load(MinecraftServer server) {
         return server.overworld()
             .getDataStorage()
@@ -41,32 +30,32 @@ public class SavedChunkData extends SavedData {
     }
 
     private static SavedChunkData load(CompoundTag compoundTag) {
-        Map<ChunkPos, List<BlockTracker>> chunkData = new ConcurrentHashMap<>();
-        ListTag list = compoundTag.getList("chunkData", Tag.TAG_COMPOUND);
-        for (int i = 0; i < list.size(); i++) {
-            CompoundTag entry = list.getCompound(i);
-            ChunkPos chunkPos = new ChunkPos(entry.getLong("chunkPos"));
-            List<BlockTracker> blockTrackerList = entry
-                .getList("chunkPos", compoundTag.TAG_COMPOUND)
-                .stream()
-                .map(e -> nbtToBlockTracker((CompoundTag) e))
-                .collect(Collectors.toList());
-            chunkData.put(chunkPos, blockTrackerList);
+        ListTag resourceLocations = compoundTag.getList("resourceLocations", Tag.TAG_COMPOUND);
+        for (int i = 0; i < resourceLocations.size(); i++) {
+            CompoundTag resourceLocation = resourceLocations.getCompound(i);
+            ResourceLocation resourceName = new ResourceLocation(resourceLocation.get("resourceName")
+                .getAsString());
+            ListTag chunks = resourceLocation.getList("chunks", Tag.TAG_COMPOUND);
+            for (int j = 0; j < chunks.size(); j++) {
+                CompoundTag chunk = chunks.getCompound(j);
+                ListTag blockTrackerTags = chunk.getList("blockData", Tag.TAG_COMPOUND);
+                ChunkData.upsertChunk(resourceName, new ChunkPos(chunk.getLong("chunkPos")), nbtToBlockTrackerList(blockTrackerTags));
+            }
         }
-        return new SavedChunkData(chunkData);
+
+        return new SavedChunkData();
     }
 
-    private static CompoundTag blockTrackerToNbt(BlockTracker blockTracker) {
-        CompoundTag compoundTag = new CompoundTag();
-        compoundTag.put("blockState", NbtUtils.writeBlockState(blockTracker.getBlockState()));
-        CompoundTag blockTrackerCompoundTag = blockTracker.getCompoundTag();
-        if (blockTrackerCompoundTag != null) {
-            compoundTag.put("blockNbt", blockTrackerCompoundTag);
-        }
-        compoundTag.put("blockPos", NbtUtils.writeBlockPos(blockTracker.getBlockPos()));
-        compoundTag.putInt("ticksLeft", blockTracker.getTicksLeft());
+    private SavedChunkData() {
 
-        return compoundTag;
+    }
+
+    private static List<BlockTracker> nbtToBlockTrackerList(ListTag listTag) {
+        List<BlockTracker> blockTrackerList = new ArrayList<>();
+        for (int i = 0; i < listTag.size(); i++) {
+            blockTrackerList.add(nbtToBlockTracker(listTag.getCompound(i)));
+        }
+        return blockTrackerList;
     }
 
     private static BlockTracker nbtToBlockTracker(CompoundTag blockTrackerTag) {
@@ -80,20 +69,41 @@ public class SavedChunkData extends SavedData {
 
     @Override
     public CompoundTag save(CompoundTag compoundTag) {
-        ListTag list = new ListTag();
-        for (Map.Entry<ChunkPos, List<BlockTracker>> entry : chunkData.entrySet()) {
-            CompoundTag entryTag = new CompoundTag();
-            entryTag.putLong("chunkPos", entry.getKey().toLong());
-            for (BlockTracker blockTracker : entry.getValue()) {
-                entryTag.put("chunkData", blockTrackerToNbt(blockTracker));
+        ListTag resourceLocations = new ListTag();
+        for (Map.Entry<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> resourceLocationMapEntry : ChunkData.getDamagedBlocks()
+            .entrySet()) {
+            ListTag chunks = new ListTag();
+            for (Map.Entry<ChunkPos, List<BlockTracker>> entry : resourceLocationMapEntry.getValue()
+                .entrySet()) {
+                CompoundTag entryTag = new CompoundTag();
+                entryTag.putLong("chunkPos", entry.getKey()
+                    .toLong());
+                entryTag.put("blockData", blockTrackerToNbt(entry.getValue()));
+                chunks.add(entryTag);
             }
-            list.add(entryTag);
+            CompoundTag entryTag = new CompoundTag();
+            entryTag.putString("resourceName", resourceLocationMapEntry.getKey()
+                .toString());
+            entryTag.put("chunks", chunks);
+            resourceLocations.add(entryTag);
         }
-        compoundTag.put("chunkData", list);
+        compoundTag.put("resourceLocations", resourceLocations);
         return compoundTag;
     }
 
-    public Map<ChunkPos, List<BlockTracker>> getChunkData() {
-        return chunkData;
+    private static ListTag blockTrackerToNbt(List<BlockTracker> blockTrackerList) {
+        ListTag list = new ListTag();
+        for (BlockTracker blockTracker : blockTrackerList) {
+            CompoundTag compoundTag = new CompoundTag();
+            compoundTag.put("blockState", NbtUtils.writeBlockState(blockTracker.getBlockState()));
+            CompoundTag blockTrackerCompoundTag = blockTracker.getCompoundTag();
+            if (blockTrackerCompoundTag != null) {
+                compoundTag.put("blockNbt", blockTrackerCompoundTag);
+            }
+            compoundTag.put("blockPos", NbtUtils.writeBlockPos(blockTracker.getBlockPos()));
+            compoundTag.putInt("ticksLeft", blockTracker.getTicksLeft());
+            list.add(compoundTag);
+        }
+        return list;
     }
 }

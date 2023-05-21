@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "id": "pvp_enhancements",
   "version": "${version}",
-  "name": "Max's PVP Enhancements",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Max's PvP Enhancements",
+  "description": "Max's PvP Enhancements, set to make PvP as an event to look forwards to and reduce sadness after destruction.",
   "authors": [
     "Me!"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "github.com/minMaximilian"
   },
-  "license": "Insert License Here",
+  "license": "LGPL",
   "icon": "assets/pvp_enhancements/icon.png",
   "environment": "*",
   "entrypoints": {

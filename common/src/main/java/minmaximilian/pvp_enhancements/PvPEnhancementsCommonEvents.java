@@ -10,6 +10,7 @@ import minmaximilian.pvp_enhancements.regen.handlers.HandleExplosion;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleLevelTick;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -17,8 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public class PvPEnhancementsCommonEvents {
-    public static void onExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
-        HandleExplosion.handleExplosion(level, blockPosList, explosion);
+    public static void onExplosion(Level level, List<BlockPos> blockPosList, List<Entity> affectedEntities, Explosion explosion) {
+        HandleExplosion.handleExplosion(level, blockPosList, affectedEntities, explosion);
     }
 
     public static void onChunkLoad(LevelAccessor level, ChunkAccess chunk) {

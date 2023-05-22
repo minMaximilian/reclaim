@@ -25,7 +25,7 @@ public class PvPEnhancementsCommonForgeEvents {
     }
 
     public static void onExplosion(ExplosionEvent.Detonate explosionEvent) {
-        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(), explosionEvent.getExplosion());
+        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(), explosionEvent.getAffectedEntities(), explosionEvent.getExplosion());
     }
 
     public static void onWorldTick(TickEvent.LevelTickEvent event) {

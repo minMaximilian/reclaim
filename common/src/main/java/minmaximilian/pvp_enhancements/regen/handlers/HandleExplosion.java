@@ -15,6 +15,7 @@ import minmaximilian.pvp_enhancements.regen.ChunkData;
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Explosion;
@@ -28,7 +29,7 @@ public class HandleExplosion {
     private static final int ticksBetweenHeals = PvPEnhancementsConfig.COMMON.ticksBetweenHeals.get();
     private static final boolean healCreeperExplosions = PvPEnhancementsConfig.COMMON.healCreeperExplosions.get();
 
-    public static void handleExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
+    public static void handleExplosion(Level level, List<BlockPos> blockPosList, List<Entity> affectedEntities, Explosion explosion) {
         if (!healCreeperExplosions && explosion.getSourceMob() != null && explosion.getSourceMob()
             .getType() == EntityType.CREEPER) return;
 

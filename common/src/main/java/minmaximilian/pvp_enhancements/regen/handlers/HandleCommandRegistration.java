@@ -7,6 +7,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
+import java.util.HashSet;
+
 public class HandleCommandRegistration {
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {

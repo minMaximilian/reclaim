@@ -25,6 +25,7 @@ public class PvPEnhancementsForge {
 
         PvPEnhancementsCommonForgeEvents.register(forgeEventBus);
 
+        PvPEnhancements.REGISTRATE.registerEventListeners(modEventBus);
         PvPEnhancements.init();
     }
 

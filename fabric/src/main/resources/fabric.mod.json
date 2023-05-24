@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "minmaximilian.pvp_enhancements.fabric.ExampleModFabric"
+      "minmaximilian.pvp_enhancements.fabric.PvPEnhancementsFabric"
     ]
   },
   "mixins": [

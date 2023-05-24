@@ -5,6 +5,7 @@ import static minmaximilian.pvp_enhancements.regen.util.LegalPlacements.filterBl
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import minmaximilian.pvp_enhancements.regen.ActiveChunks;
@@ -32,13 +33,13 @@ public class HandleLevelTick {
             .location());
         for (Map.Entry<ChunkPos, List<BlockTracker>> entry : dimensionChunks.entrySet()) {
             if (ActiveChunks.containsChunk(level.dimension()
-                .location(), entry.getKey()) && handleChunkList(level, entry.getValue()))
+                .location(), entry.getKey()) && handleChunk(level, entry.getValue()))
                 ChunkData.removeChunk(level.dimension()
                     .location(), entry.getKey());
         }
     }
 
-    private static boolean handleChunkList(Level level, List<BlockTracker> blockTrackerList) {
+    private static boolean handleChunk(Level level, List<BlockTracker> blockTrackerList) {
         boolean flag = true;
         Iterator<BlockTracker> iterator = blockTrackerList.iterator();
 
@@ -78,7 +79,9 @@ public class HandleLevelTick {
             level.setBlock(blockTracker.getBlockPos(), Blocks.FIRE.defaultBlockState(), 3);
         else level.setBlock(blockTracker.getBlockPos(), blockTracker.getBlockState(), 3);
 
-        if (blockTracker.getCompoundTag() != null)
+        if (blockTracker.getCompoundTag() != null && blockTracker.getCompoundTag()
+            .getAllKeys()
+            .size() != 0)
             level.setBlockEntity(BlockEntity.loadStatic(blockTracker.getBlockPos(), blockTracker.getBlockState(), blockTracker.getCompoundTag()));
         level.playSound(null, blockTracker.getBlockPos()
             .getX(), blockTracker.getBlockPos()
@@ -99,6 +102,23 @@ public class HandleLevelTick {
             if (items != null) {
                 for (int i = 0; i < items.size(); i++) {
                     level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ItemStack.of(items.getCompound(i))));
+                }
+            }
+        }
+    }
+
+    public static void healChunks(Set<ChunkPos> chunkPosSet) {
+        Map<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> damagedBlocks = ChunkData.getDamagedBlocks();
+        AtomicInteger i = new AtomicInteger(1);
+        for (Map.Entry<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> locationMapEntry : damagedBlocks.entrySet()) {
+            for (Map.Entry<ChunkPos, List<BlockTracker>> chunkPosListEntry : locationMapEntry.getValue()
+                .entrySet()) {
+                if (chunkPosSet.contains(chunkPosListEntry.getKey())) {
+                    chunkPosListEntry.getValue()
+                        .sort(new BlockTracker.BlockTrackerComparator());
+
+                    chunkPosListEntry.getValue()
+                        .forEach(blockTracker -> blockTracker.setTicksLeft(i.getAndIncrement()));
                 }
             }
         }

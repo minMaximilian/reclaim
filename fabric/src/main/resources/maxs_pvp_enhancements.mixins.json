@@ -4,7 +4,8 @@
   "package": "minmaximilian.pvp_enhancements.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ExplosionMixin"
+    "ExplosionMixin",
+    "LightningBoltMixin"
   ],
   "injectors": {
     "defaultRequire": 1

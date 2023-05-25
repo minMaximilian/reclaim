@@ -11,6 +11,7 @@ public class PvPEnhancementsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         PvPEnhancements.init();
+        PvPEnhancements.REGISTRATE.register();
 
         PvPEnhancementsConfig.registerConfigs((t, c) -> ModLoadingContext.registerConfig(PvPEnhancements.MOD_ID, t, c));
 

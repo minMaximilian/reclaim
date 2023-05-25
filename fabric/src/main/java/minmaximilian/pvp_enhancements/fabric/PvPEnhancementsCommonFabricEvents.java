@@ -66,8 +66,9 @@ public class PvPEnhancementsCommonFabricEvents {
         PvPEnhancementsCommonEvents.onLoadCommands(commandSourceStackCommandDispatcher);
     }
 
-    public static void onLightningStrike(Entity entity, LightningBolt lightningBolt) {
+    public static boolean onLightningStrike(Entity entity, LightningBolt lightningBolt) {
         PvPEnhancementsCommonEvents.onLightningStrike(entity, lightningBolt);
+        return true;
     }
 
     public static void onPenetration() {

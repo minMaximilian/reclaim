@@ -8,12 +8,14 @@ import net.minecraft.world.entity.LightningBolt;
 public class EntityEvents {
     public static final Event<LightningStrike> STRUCK_BY_LIGHTNING = EventFactory.createArrayBacked(LightningStrike.class, callbacks -> (entity, lightningBolt) -> {
         for (LightningStrike callback : callbacks)
-            callback.onEntityStruckByLightning(entity, lightningBolt);
+            if (callback.onEntityStruckByLightning(entity, lightningBolt))
+                return true;
+        return false;
 
     });
 
     @FunctionalInterface
     public interface LightningStrike {
-        void onEntityStruckByLightning(Entity entity, LightningBolt bolt);
+        boolean onEntityStruckByLightning(Entity entity, LightningBolt bolt);
     }
 }

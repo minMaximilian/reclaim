@@ -21,6 +21,7 @@ configurations {
 
 repositories {
     // mavens for Fabric-exclusives
+    mavenCentral()
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" }
@@ -38,11 +39,9 @@ dependencies {
 
     // dependencies
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
-
+    
     // Create - dependencies are added transitively
     modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
-    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
-    modImplementation("maven.modrinth:scannable:MC${minecraft_version}-fabric-${scannable_version}")
 
 
     // Development QOL

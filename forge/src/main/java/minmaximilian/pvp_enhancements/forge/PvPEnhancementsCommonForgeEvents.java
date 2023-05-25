@@ -25,7 +25,7 @@ public class PvPEnhancementsCommonForgeEvents {
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onItemExpiry);
     }
 
-    private static void onItemExpiry(ItemExpireEvent event) {
+    public static void onItemExpiry(ItemExpireEvent event) {
         if (event.getEntity().getItem().getItem() == Items.HEPHAESTUS_BAG.get())
             event.setCanceled(true);
     }
@@ -50,7 +50,7 @@ public class PvPEnhancementsCommonForgeEvents {
         PvPEnhancementsCommonEvents.onChunkUnload(event.getLevel(), event.getChunk());
     }
 
-    private static void onRegisterCommands(RegisterCommandsEvent event) {
+    public static void onRegisterCommands(RegisterCommandsEvent event) {
         PvPEnhancementsCommonEvents.onLoadCommands(event.getDispatcher());
     }
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "pvp_enhancements",
+  "id": "maxs_pvp_enhancements",
   "version": "${version}",
   "name": "Max's PvP Enhancements",
   "description": "Max's PvP Enhancements, set to make PvP as an event to look forwards to and reduce sadness after destruction.",
@@ -12,7 +12,7 @@
     "sources": "github.com/minMaximilian"
   },
   "license": "LGPL",
-  "icon": "assets/pvp_enhancements/icon.png",
+  "icon": "assets/maxs_pvp_enhancements/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -20,6 +20,7 @@
     ]
   },
   "mixins": [
+    "maxs_pvp_enhancements.mixins.json"
   ],
   "depends": {
     "fabric": "*",

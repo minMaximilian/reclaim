@@ -11,6 +11,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 
 public class PvPEnhancementsConfig {
+    // Config Copy of a Config Copy, the world goes round and round
     private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
     public static PvPEnhancementsCommonConfig COMMON;
 

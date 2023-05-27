@@ -2,7 +2,6 @@ package minmaximilian.pvp_enhancements.item;
 
 import java.util.Objects;
 
-import li.cil.scannable.client.renderer.ScannerRenderer;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleLevelTick;
 import minmaximilian.pvp_enhancements.regen.util.ChunkPosUtils;
 import net.minecraft.sounds.SoundEvents;
@@ -50,19 +49,15 @@ public class HephaestusBag extends Item {
 
         if (!isCharged(stack)) return InteractionResultHolder.fail(stack);
 
-
         Vec3 lastScanCenter = Objects.requireNonNull(player.position());
 
-        ScannerRenderer.INSTANCE.ping(lastScanCenter);
+//        ScannerRenderer.INSTANCE.ping(lastScanCenter);
 
         level.playSound(null, player.getOnPos().above(10), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.MASTER, 1.0F, 0.8F + 0.4F * level.getRandom().nextFloat());
 
         HandleLevelTick.healChunks(ChunkPosUtils.getAdjacentChunkPositions(new ChunkPos(player.getOnPos())));
 
-        if (!player.isCreative()) {
-            setCharged(stack, false);
-        }
-
+        if (!player.isCreative()) setCharged(stack, false);
 
         return InteractionResultHolder.success(stack);
     }

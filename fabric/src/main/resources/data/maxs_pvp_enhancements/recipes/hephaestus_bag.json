@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#N#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:echo_shard"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "result": {
+    "item": "maxs_pvp_enhancements:hephaestus_bag",
+    "count": 1
+  }
+}

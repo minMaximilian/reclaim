@@ -7,8 +7,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import minmaximilian.pvp_enhancements.fabric.event.EntityEvents;
 import minmaximilian.pvp_enhancements.fabric.event.ExplosionEvents;
+import minmaximilian.pvp_enhancements.item.Items;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.commands.CommandBuildContext;
@@ -19,6 +21,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,13 +37,14 @@ public class PvPEnhancementsCommonFabricEvents {
         ServerChunkEvents.CHUNK_UNLOAD.register(PvPEnhancementsCommonFabricEvents::onChunkUnload);
         CommandRegistrationCallback.EVENT.register(PvPEnhancementsCommonFabricEvents::onRegisterCommands);
         EntityEvents.STRUCK_BY_LIGHTNING.register(PvPEnhancementsCommonFabricEvents::onLightningStrike);
-//        forgeEventBus.register(PvPEnhancementsCommonFabricEvents::onItemExpiry);
+        ServerEntityEvents.ENTITY_UNLOAD.register(PvPEnhancementsCommonFabricEvents::onItemExpiry);
     }
 
-//    public static void onItemExpiry(ItemExpireEvent event) {
-//        if (event.getEntity().getItem().getItem() == Items.HEPHAESTUS_BAG.get())
-//            event.setCanceled(true);
-//    }
+    public static void onItemExpiry(Entity entity, ServerLevel serverLevel) {
+        if (entity instanceof ItemEntity item)
+            if (item.getItem().getItem() == Items.HEPHAESTUS_BAG.get())
+                item.setUnlimitedLifetime();
+    }
 
     public static void onServerStarting(MinecraftServer server, ServerLevel level) {
         PvPEnhancementsCommonEvents.onServerStarting(level);

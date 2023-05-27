@@ -21,8 +21,6 @@ import net.minecraft.world.phys.Vec3;
 public class HephaestusBag extends Item {
     public static final String NBT_KEY_CHARGED = "Charged";
 
-    public static boolean test = false;
-
     public HephaestusBag(Properties properties) {
         super(properties);
     }
@@ -33,11 +31,6 @@ public class HephaestusBag extends Item {
 
     public void setCharged(ItemStack stack, boolean charged) {
         stack.getOrCreateTag().putBoolean(NBT_KEY_CHARGED, charged);
-    }
-
-
-    public boolean setFoil(ItemStack stack, boolean test) {
-        return test;
     }
 
     @Override

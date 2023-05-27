@@ -17,6 +17,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+
 public class HephaestusBag extends Item {
     public static final String NBT_KEY_CHARGED = "Charged";
 
@@ -30,6 +31,11 @@ public class HephaestusBag extends Item {
 
     public void setCharged(ItemStack stack, boolean charged) {
         stack.getOrCreateTag().putBoolean(NBT_KEY_CHARGED, charged);
+    }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return isCharged(stack);
     }
 
     @Override
@@ -53,7 +59,10 @@ public class HephaestusBag extends Item {
 
         HandleLevelTick.healChunks(ChunkPosUtils.getAdjacentChunkPositions(new ChunkPos(player.getOnPos())));
 
-        setCharged(stack, false);
+        if (!player.isCreative()) {
+            setCharged(stack, false);
+        }
+
 
         return InteractionResultHolder.success(stack);
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.brigadier.CommandDispatcher;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
+import minmaximilian.pvp_enhancements.compat.Mods;
 import minmaximilian.pvp_enhancements.fabric.event.EntityEvents;
 import minmaximilian.pvp_enhancements.fabric.event.ExplosionEvents;
 import minmaximilian.pvp_enhancements.item.Items;
@@ -16,7 +17,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -24,8 +24,9 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import rbasamoyai.createbigcannons.fabric.events.OnCannonBreakBlockEvent;
+import rbasamoyai.createbigcannons.multiloader.event_classes.OnCannonBreakBlock;
 
 public class PvPEnhancementsCommonFabricEvents {
 
@@ -38,6 +39,11 @@ public class PvPEnhancementsCommonFabricEvents {
         CommandRegistrationCallback.EVENT.register(PvPEnhancementsCommonFabricEvents::onRegisterCommands);
         EntityEvents.STRUCK_BY_LIGHTNING.register(PvPEnhancementsCommonFabricEvents::onLightningStrike);
         ServerEntityEvents.ENTITY_UNLOAD.register(PvPEnhancementsCommonFabricEvents::onItemExpiry);
+        Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
+            OnCannonBreakBlockEvent.EVENT.register(PvPEnhancementsCommonFabricEvents::onPenetration);
+            return () -> {
+            };
+        });
     }
 
     public static void onItemExpiry(Entity entity, ServerLevel serverLevel) {
@@ -75,7 +81,7 @@ public class PvPEnhancementsCommonFabricEvents {
         return true;
     }
 
-    public static void onPenetration() {
-        PvPEnhancementsCommonEvents.handlePenetration(new BlockPos(0, 0, 0), new BlockState(null, null, null));
+    public static void onPenetration(OnCannonBreakBlock onCannonBreakBlock) {
+        PvPEnhancementsCommonEvents.handlePenetration(onCannonBreakBlock);
     }
 }

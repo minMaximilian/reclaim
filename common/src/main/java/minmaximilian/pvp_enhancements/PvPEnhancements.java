@@ -3,6 +3,7 @@ package minmaximilian.pvp_enhancements;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
 import minmaximilian.pvp_enhancements.base.PvPEnhancementsCreativeModeTab;
+import minmaximilian.pvp_enhancements.compat.Mods;
 import minmaximilian.pvp_enhancements.item.Items;
 import minmaximilian.pvp_enhancements.ponder.PonderIndex;
 import minmaximilian.pvp_enhancements.regen.SavedChunkDataManager;
@@ -16,7 +17,9 @@ public class PvPEnhancements {
 
     public static void init() {
         PvPEnhancementsCreativeModeTab.register();
+
         Items.register();
-        PonderIndex.register();
+
+        Mods.CREATE.executeIfInstalled(() -> PonderIndex::register);
     }
 }

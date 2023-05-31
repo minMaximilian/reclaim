@@ -26,6 +26,7 @@ configurations {
 
 repositories {
     // mavens for Forge-exclusives
+    maven { url = "https://maven.realrobotix.me/master" }
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://maven.theillusivec4.top/" } // Curios
     maven { // Create Forge and Registrate Forge
@@ -46,6 +47,10 @@ dependencies {
     modCompileOnly("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
     modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
     modCompileOnly("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
+
+    // CBC
+    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
+    modCompileOnly("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
 
     // Misc
     modImplementation("maven.modrinth:scannable:MC${minecraft_version}-forge-${scannable_version}")

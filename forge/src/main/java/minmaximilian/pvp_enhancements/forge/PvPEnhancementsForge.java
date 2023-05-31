@@ -1,6 +1,5 @@
 package minmaximilian.pvp_enhancements.forge;
 
-
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import net.minecraftforge.common.MinecraftForge;

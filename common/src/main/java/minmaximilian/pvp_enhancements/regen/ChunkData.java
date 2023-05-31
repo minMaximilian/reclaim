@@ -3,9 +3,11 @@ package minmaximilian.pvp_enhancements.regen;
 
 import static minmaximilian.pvp_enhancements.PvPEnhancements.SAVED_CHUNKS;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.resources.ResourceLocation;
@@ -39,16 +41,29 @@ public class ChunkData {
         chunkData.put(resourceLocation, new ConcurrentHashMap<>());
     }
 
+    public static void upsertPenetration(ResourceLocation resourceLocation, ChunkPos chunkPos, BlockTracker blockTracker) {
+        upsertResourceLocation(resourceLocation);
+
+        Map<ChunkPos, List<BlockTracker>> resourceChunks = chunkData.computeIfAbsent(resourceLocation, k -> new ConcurrentHashMap<>());
+        List<BlockTracker> chunkBlockTrackers = resourceChunks.computeIfAbsent(chunkPos, k -> new ArrayList<>());
+
+        if (!chunkBlockTrackers.contains(blockTracker)) {
+            chunkBlockTrackers.add(blockTracker);
+        }
+
+        ActiveChunks.upsertChunk(resourceLocation, chunkPos);
+        SAVED_CHUNKS.markDataDirty();
+    }
+
     public static void upsertChunk(ResourceLocation resourceLocation, ChunkPos chunkPos, List<BlockTracker> blockTrackerList) {
         upsertResourceLocation(resourceLocation);
-        if (containsChunk(resourceLocation, chunkPos)) {
-            chunkData.get(resourceLocation)
-                .get(chunkPos)
-                .addAll(blockTrackerList);
-        } else {
-            chunkData.get(resourceLocation)
-                .put(chunkPos, blockTrackerList);
-        }
+
+        Map<ChunkPos, List<BlockTracker>> resourceChunks = chunkData.computeIfAbsent(resourceLocation, k -> new ConcurrentHashMap<>());
+        List<BlockTracker> existingBlockTrackers = resourceChunks.getOrDefault(chunkPos, new ArrayList<>());
+        existingBlockTrackers.addAll(blockTrackerList);
+        List<BlockTracker> deduplicatedBlockTrackers = existingBlockTrackers.stream().distinct().collect(Collectors.toList());
+        resourceChunks.put(chunkPos, deduplicatedBlockTrackers);
+
         ActiveChunks.upsertChunk(resourceLocation, chunkPos);
         SAVED_CHUNKS.markDataDirty();
     }

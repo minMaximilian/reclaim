@@ -1,6 +1,7 @@
 package minmaximilian.pvp_enhancements.regen.util;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -39,6 +40,19 @@ public class BlockTracker {
 
     public CompoundTag getCompoundTag() {
         return compoundTag;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlockTracker that = (BlockTracker) o;
+        return blockPos.equals(that.blockPos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(blockPos);
     }
 
     public static class BlockTrackerComparator implements Comparator<BlockTracker> {

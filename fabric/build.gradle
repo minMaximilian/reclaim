@@ -22,6 +22,7 @@ configurations {
 repositories {
     // mavens for Fabric-exclusives
     mavenCentral()
+    maven { url = "https://maven.realrobotix.me/master" }
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" }
@@ -42,6 +43,10 @@ dependencies {
 
     // Create - dependencies are added transitively
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+
+    // CBC
+    modLocalRuntime("com.rbasamoyai:createbigcannons-fabric-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
+    modCompileOnly("com.rbasamoyai:createbigcannons-fabric-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
 
     // Development QOL
     modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")

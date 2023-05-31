@@ -1,9 +1,8 @@
 package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
+import minmaximilian.pvp_enhancements.compat.Mods;
 import minmaximilian.pvp_enhancements.item.Items;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
@@ -12,6 +11,7 @@ import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import rbasamoyai.createbigcannons.forge.events.OnCannonBreakBlockImpl;
 
 public class PvPEnhancementsCommonForgeEvents {
     public static void register(IEventBus forgeEventBus) {
@@ -23,6 +23,12 @@ public class PvPEnhancementsCommonForgeEvents {
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onRegisterCommands);
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onLightningStrike);
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onItemExpiry);
+
+        Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
+            forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onPenetration);
+            return () -> {
+            };
+        });
     }
 
     public static void onItemExpiry(ItemExpireEvent event) {
@@ -58,7 +64,7 @@ public class PvPEnhancementsCommonForgeEvents {
         PvPEnhancementsCommonEvents.onLightningStrike(event.getEntity(), event.getLightning());
     }
 
-    public static void onPenetration() {
-        PvPEnhancementsCommonEvents.handlePenetration(new BlockPos(0, 0, 0), new BlockState(null, null, null));
+    public static void onPenetration(OnCannonBreakBlockImpl onCannonBreakBlock) {
+        PvPEnhancementsCommonEvents.handlePenetration(onCannonBreakBlock);
     }
 }

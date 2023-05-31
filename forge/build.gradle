@@ -26,8 +26,8 @@ configurations {
 
 repositories {
     // mavens for Forge-exclusives
-    maven { url = "https://maven.realrobotix.me/master" }
     maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://maven.realrobotix.me/master" }
     maven { url = "https://maven.theillusivec4.top/" } // Curios
     maven { // Create Forge and Registrate Forge
         url = "https://maven.tterrag.com/"
@@ -52,8 +52,10 @@ dependencies {
     modCompileOnly("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
 
     // Test Compatibilities
-//    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88")
-//    modLocalRuntime("com.simibubi.create:create-${minecraft_version}:${create_forge_version})
+    modLocalRuntime("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
+    // Ensure flywheel is included in runtime when running with create
+    modLocalRuntime("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
+    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
 
     // Development QOL
     modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }

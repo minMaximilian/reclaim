@@ -6,6 +6,7 @@ import minmaximilian.pvp_enhancements.data.PvPRegistrate;
 import minmaximilian.pvp_enhancements.item.Items;
 import minmaximilian.pvp_enhancements.ponder.PonderIndex;
 import minmaximilian.pvp_enhancements.regen.SavedChunkDataManager;
+import net.minecraftforge.fml.config.IConfigSpec;
 
 public class PvPEnhancements {
     public static final String MOD_ID = "maxs_pvp_enhancements";

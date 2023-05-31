@@ -1,5 +1,3 @@
-# Max's PvP Enhancements
-
 <p align="center"><img src="https://i.imgur.com/e64Aepw.png" alt="Logo" width="200"></p>
 <h1 align="center">
     Max's PvP Enhancements<br>

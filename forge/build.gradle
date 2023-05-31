@@ -49,11 +49,11 @@ dependencies {
     modCompileOnly("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
 
     // CBC
-    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
     modCompileOnly("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
+//    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-1.19.2:0.5.1.a-nightly-af35e88") { transitive = false }
 
     // Misc
-    modImplementation("maven.modrinth:scannable:MC${minecraft_version}-forge-${scannable_version}")
+//    modImplementation("maven.modrinth:scannable:MC${minecraft_version}-forge-${scannable_version}")
 
     // Development QOL
     modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }

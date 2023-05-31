@@ -22,9 +22,7 @@ repositories {
 dependencies {
     modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
-//    modImplementation("maven.modrinth:scannable:MC${minecraft_version}-fabric-${scannable_version}")
     modCompileOnly("com.rbasamoyai:createbigcannons-common-1.19.2:0.5.1.a-nightly-af35e88")
-    modImplementation("maven.modrinth:scannable:MC${minecraft_version}-fabric-${scannable_version}")
 }
 
 publishing {

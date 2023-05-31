@@ -2,6 +2,7 @@ package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import minmaximilian.pvp_enhancements.compat.Mods;
+import minmaximilian.pvp_enhancements.forge.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.item.Items;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -11,7 +12,6 @@ import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import rbasamoyai.createbigcannons.forge.events.OnCannonBreakBlockImpl;
 
 public class PvPEnhancementsCommonForgeEvents {
     public static void register(IEventBus forgeEventBus) {
@@ -25,7 +25,7 @@ public class PvPEnhancementsCommonForgeEvents {
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onItemExpiry);
 
         Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
-            forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onPenetration);
+            forgeEventBus.addListener(PvPEnhancementsCBCEvents::onPenetration);
             return () -> {
             };
         });
@@ -62,9 +62,5 @@ public class PvPEnhancementsCommonForgeEvents {
 
     public static void onLightningStrike(EntityStruckByLightningEvent event) {
         PvPEnhancementsCommonEvents.onLightningStrike(event.getEntity(), event.getLightning());
-    }
-
-    public static void onPenetration(OnCannonBreakBlockImpl onCannonBreakBlock) {
-        PvPEnhancementsCommonEvents.handlePenetration(onCannonBreakBlock);
     }
 }

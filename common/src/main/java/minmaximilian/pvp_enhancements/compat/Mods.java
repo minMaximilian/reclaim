@@ -1,9 +1,8 @@
 package minmaximilian.pvp_enhancements.compat;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import com.simibubi.create.foundation.utility.Lang;
 
 import minmaximilian.pvp_enhancements.IndexPlatform;
 import net.minecraft.core.Registry;
@@ -26,7 +25,7 @@ public enum Mods {
      * @return the mod id
      */
     public String asId() {
-        return Lang.asId(name());
+        return name().toLowerCase(Locale.ROOT);
     }
 
     /**

@@ -6,6 +6,7 @@ import com.mojang.brigadier.CommandDispatcher;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import minmaximilian.pvp_enhancements.compat.Mods;
+import minmaximilian.pvp_enhancements.fabric.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.fabric.event.EntityEvents;
 import minmaximilian.pvp_enhancements.fabric.event.ExplosionEvents;
 import minmaximilian.pvp_enhancements.item.Items;
@@ -25,8 +26,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import rbasamoyai.createbigcannons.fabric.events.OnCannonBreakBlockEvent;
-import rbasamoyai.createbigcannons.multiloader.event_classes.OnCannonBreakBlock;
 
 public class PvPEnhancementsCommonFabricEvents {
 
@@ -39,11 +38,7 @@ public class PvPEnhancementsCommonFabricEvents {
         CommandRegistrationCallback.EVENT.register(PvPEnhancementsCommonFabricEvents::onRegisterCommands);
         EntityEvents.STRUCK_BY_LIGHTNING.register(PvPEnhancementsCommonFabricEvents::onLightningStrike);
         ServerEntityEvents.ENTITY_UNLOAD.register(PvPEnhancementsCommonFabricEvents::onItemExpiry);
-        Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
-            OnCannonBreakBlockEvent.EVENT.register(PvPEnhancementsCommonFabricEvents::onPenetration);
-            return () -> {
-            };
-        });
+        Mods.CREATEBIGCANNONS.executeIfInstalled(() -> PvPEnhancementsCBCEvents::register);
     }
 
     public static void onItemExpiry(Entity entity, ServerLevel serverLevel) {
@@ -79,9 +74,5 @@ public class PvPEnhancementsCommonFabricEvents {
     public static boolean onLightningStrike(Entity entity, LightningBolt lightningBolt) {
         PvPEnhancementsCommonEvents.onLightningStrike(entity, lightningBolt);
         return true;
-    }
-
-    public static void onPenetration(OnCannonBreakBlock onCannonBreakBlock) {
-        PvPEnhancementsCommonEvents.handlePenetration(onCannonBreakBlock);
     }
 }

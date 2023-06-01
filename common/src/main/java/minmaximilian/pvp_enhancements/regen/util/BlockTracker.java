@@ -18,7 +18,7 @@ public class BlockTracker {
     public BlockTracker(BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos, int ticksLeft) {
         this.blockState = blockState;
         this.compoundTag = compoundTag;
-        this.blockPos = blockPos;
+        this.blockPos = blockPos.immutable();
         this.ticksLeft = ticksLeft;
     }
 

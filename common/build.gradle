@@ -26,7 +26,7 @@ dependencies {
 
     // Compatibilities
     modApi("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
-    modApi("com.rbasamoyai:createbigcannons-common-1.19.2:0.5.1.a-nightly-af35e88")
+    modApi("com.rbasamoyai:createbigcannons-common-${minecraft_version}:${cbc_version}")
 }
 
 publishing {

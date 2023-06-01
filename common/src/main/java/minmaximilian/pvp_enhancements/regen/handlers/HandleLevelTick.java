@@ -25,6 +25,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public class HandleLevelTick {
     public static void handleLevelTick(Level level) {
         if (!ActiveChunks.containsResourceLocation(level.dimension()

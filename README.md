@@ -1,4 +1,4 @@
-<p align="center"><img src="https://i.imgur.com/e64Aepw.png" alt="Logo" width="200"></p>
+<p align="center"><img src="https://i.imgur.com/HC6breU.png" alt="Logo" width="200"></p>
 <h1 align="center">
     Max's PvP Enhancements<br>
     <a href="https://github.com/minMaximilian/maxs-pvp-enhancements/blob/master/LICENSE">

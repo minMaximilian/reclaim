@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import minmaximilian.pvp_enhancements.block.WallPlaster;
 import minmaximilian.pvp_enhancements.regen.ActiveChunks;
 import minmaximilian.pvp_enhancements.regen.ChunkData;
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
@@ -24,8 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 public class HandleLevelTick {
     public static void handleLevelTick(Level level) {
@@ -61,7 +60,10 @@ public class HandleLevelTick {
                     flag = false;
                     FluidState fluidState = level.getFluidState(blockPos);
                     if (filterBlocks(level.getBlockState(blockPos)) && (fluidState.isEmpty() || fluidState.isSource())) {
-                        popBlockTracker(level, blockTracker);
+                        if (level.getBlockState(blockPos).getBlock() instanceof WallPlaster)
+                            healBlockTracker(level, blockTracker);
+                        else
+                            popBlockTracker(level, blockTracker);
                         blockTracker.setTicksLeft(-1);
                     } else blockTracker.setTicksLeft(blockTracker.getTicksLeft() - 1);
             }
@@ -71,10 +73,6 @@ public class HandleLevelTick {
     }
 
     private static void healBlockTracker(Level level, BlockTracker blockTracker) {
-        FluidState fluidState = level.getFluidState(blockTracker.getBlockPos());
-        if (filterBlocks(level.getBlockState(blockTracker.getBlockPos())) && (fluidState.isEmpty() || fluidState.isSource()))
-            return;
-
         if (blockTracker.getBlockState()
             .getBlock()
             .equals(Blocks.NETHER_PORTAL))

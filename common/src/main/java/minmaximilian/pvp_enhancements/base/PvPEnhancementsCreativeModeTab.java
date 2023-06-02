@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import minmaximilian.pvp_enhancements.IndexPlatform;
 import minmaximilian.pvp_enhancements.PvPEnhancements;
+import minmaximilian.pvp_enhancements.block.Blocks;
 import minmaximilian.pvp_enhancements.item.Items;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
@@ -19,7 +20,9 @@ public class PvPEnhancementsCreativeModeTab {
         @Override
         public void fillItemList(NonNullList<ItemStack> list) {
             list.addAll(Arrays.asList(
-                Items.HEPHAESTUS_BAG.asStack()));
+                Items.HEPHAESTUS_BAG.asStack(),
+                Blocks.WALL_PLASTER.asStack()
+            ));
         }
     };
 

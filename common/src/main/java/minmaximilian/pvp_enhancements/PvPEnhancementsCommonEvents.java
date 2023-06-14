@@ -26,10 +26,12 @@ public class PvPEnhancementsCommonEvents {
     }
 
     public static void onChunkLoad(LevelAccessor level, ChunkAccess chunk) {
+        if (level.isClientSide()) return;
         HandleChunkLoading.handleChunkLoading(level, chunk);
     }
 
     public static void onChunkUnload(LevelAccessor level, ChunkAccess chunk) {
+        if (level.isClientSide()) return;
         HandleChunkLoading.handleChunkUnloading(level, chunk);
     }
 
@@ -41,8 +43,9 @@ public class PvPEnhancementsCommonEvents {
         HandleCreateBigCannons.handlePenetration(onCannonBreakBlock);
     }
 
-    public static void onServerStarting(LevelAccessor levelAccessor) {
-        PvPEnhancements.SAVED_CHUNKS.levelLoaded(levelAccessor);
+    public static void onServerStarting(LevelAccessor level) {
+        if (level.isClientSide()) return;
+        PvPEnhancements.SAVED_CHUNKS.levelLoaded(level);
     }
 
     public static void onLoadCommands(CommandDispatcher<CommandSourceStack> dispatcher) {

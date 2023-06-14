@@ -2,10 +2,8 @@ package minmaximilian.pvp_enhancements;
 
 import minmaximilian.pvp_enhancements.base.PvPEnhancementsCreativeModeTab;
 import minmaximilian.pvp_enhancements.block.Blocks;
-import minmaximilian.pvp_enhancements.compat.Mods;
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
 import minmaximilian.pvp_enhancements.item.Items;
-import minmaximilian.pvp_enhancements.ponder.PonderIndex;
 import minmaximilian.pvp_enhancements.regen.SavedChunkDataManager;
 
 public class PvPEnhancements {
@@ -20,7 +18,5 @@ public class PvPEnhancements {
 
         Items.register();
         Blocks.register();
-
-        Mods.CREATE.executeIfInstalled(() -> PonderIndex::register);
     }
 }

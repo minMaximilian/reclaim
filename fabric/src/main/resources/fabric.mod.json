@@ -12,7 +12,7 @@
     "sources": "github.com/minMaximilian"
   },
   "license": "LGPL",
-  "icon": "assets/maxs_pvp_enhancements/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

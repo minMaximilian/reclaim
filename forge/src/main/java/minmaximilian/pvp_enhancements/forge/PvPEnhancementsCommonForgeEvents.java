@@ -32,7 +32,7 @@ public class PvPEnhancementsCommonForgeEvents {
     }
 
     public static void onItemExpiry(ItemExpireEvent event) {
-        if (event.getEntity().getItem().getItem() == Items.HEPHAESTUS_BAG.get())
+        if (event.getEntity().getItem().getItem() == Items.HEPHAESTUS_BAG.get() && event.getEntity().getOwner() != null)
             event.setCanceled(true);
     }
 

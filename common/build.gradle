@@ -3,11 +3,12 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/pvp_enhancements.accesswidener")
+    accessWidenerPath = file("src/main/resources/maxs_pvp_enhancements.accesswidener")
 }
 
 repositories {
     // mavens for Create Fabric and dependencies
+    maven { url = "https://mvn.devos.one/#/" }
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" }

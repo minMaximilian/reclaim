@@ -38,16 +38,13 @@ public class SavedChunkData extends SavedData {
             ListTag chunks = resourceLocation.getList("chunks", Tag.TAG_COMPOUND);
             for (int j = 0; j < chunks.size(); j++) {
                 CompoundTag chunk = chunks.getCompound(j);
-                ListTag blockTrackerTags = chunk.getList("blockData", Tag.TAG_COMPOUND);
-                ChunkData.upsertChunk(resourceName, new ChunkPos(chunk.getLong("chunkPos")), nbtToBlockTrackerList(blockTrackerTags));
+                CompoundTag chunkTrackerTag = chunk.getCompound("chunkData");
+                ChunkData.upsertChunk(resourceName, new ChunkPos(chunk.getLong("chunkPos")), nbtToBlockTrackerList(chunkTrackerTag.getList("blockTrackers", Tag.TAG_COMPOUND)));
+                ChunkData.getChunkTrackers().get(resourceName).get(new ChunkPos(chunk.getLong("chunkPos"))).setTicksLeft(chunkTrackerTag.getInt("time"));
             }
         }
 
         return new SavedChunkData();
-    }
-
-    private SavedChunkData() {
-
     }
 
     private static List<BlockTracker> nbtToBlockTrackerList(ListTag listTag) {
@@ -67,27 +64,10 @@ public class SavedChunkData extends SavedData {
         return new BlockTracker(blockState, blockNbt, blockPos, ticksLeft);
     }
 
-    @Override
-    public CompoundTag save(CompoundTag compoundTag) {
-        ListTag resourceLocations = new ListTag();
-        for (Map.Entry<ResourceLocation, Map<ChunkPos, List<BlockTracker>>> resourceLocationMapEntry : ChunkData.getDamagedBlocks()
-            .entrySet()) {
-            ListTag chunks = new ListTag();
-            for (Map.Entry<ChunkPos, List<BlockTracker>> entry : resourceLocationMapEntry.getValue()
-                .entrySet()) {
-                CompoundTag entryTag = new CompoundTag();
-                entryTag.putLong("chunkPos", entry.getKey()
-                    .toLong());
-                entryTag.put("blockData", blockTrackerToNbt(entry.getValue()));
-                chunks.add(entryTag);
-            }
-            CompoundTag entryTag = new CompoundTag();
-            entryTag.putString("resourceName", resourceLocationMapEntry.getKey()
-                .toString());
-            entryTag.put("chunks", chunks);
-            resourceLocations.add(entryTag);
-        }
-        compoundTag.put("resourceLocations", resourceLocations);
+    private static CompoundTag chunkTrackerToNbt(ChunkTracker chunkTracker) {
+        CompoundTag compoundTag = new CompoundTag();
+        compoundTag.putInt("time", chunkTracker.getTicksLeft());
+        compoundTag.put("blockTrackers", blockTrackerToNbt(chunkTracker.getBlockTrackers()));
         return compoundTag;
     }
 
@@ -105,5 +85,29 @@ public class SavedChunkData extends SavedData {
             list.add(compoundTag);
         }
         return list;
+    }
+
+    @Override
+    public CompoundTag save(CompoundTag compoundTag) {
+        ListTag resourceLocations = new ListTag();
+        for (Map.Entry<ResourceLocation, Map<ChunkPos, ChunkTracker>> resourceLocationMapEntry : ChunkData.getChunkTrackers()
+            .entrySet()) {
+            ListTag chunks = new ListTag();
+            for (Map.Entry<ChunkPos, ChunkTracker> entry : resourceLocationMapEntry.getValue()
+                .entrySet()) {
+                CompoundTag entryTag = new CompoundTag();
+                entryTag.putLong("chunkPos", entry.getKey()
+                    .toLong());
+                entryTag.put("chunkData", chunkTrackerToNbt(entry.getValue()));
+                chunks.add(entryTag);
+            }
+            CompoundTag entryTag = new CompoundTag();
+            entryTag.putString("resourceName", resourceLocationMapEntry.getKey()
+                .toString());
+            entryTag.put("chunks", chunks);
+            resourceLocations.add(entryTag);
+        }
+        compoundTag.put("resourceLocations", resourceLocations);
+        return compoundTag;
     }
 }

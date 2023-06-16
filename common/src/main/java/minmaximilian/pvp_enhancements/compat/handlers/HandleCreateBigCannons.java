@@ -1,4 +1,4 @@
-package minmaximilian.pvp_enhancements.regen.handlers;
+package minmaximilian.pvp_enhancements.compat.handlers;
 
 import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import minmaximilian.pvp_enhancements.regen.ChunkData;

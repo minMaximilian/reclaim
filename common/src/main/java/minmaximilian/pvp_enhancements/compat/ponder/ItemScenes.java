@@ -1,4 +1,4 @@
-package minmaximilian.pvp_enhancements.ponder;
+package minmaximilian.pvp_enhancements.compat.ponder;
 
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;

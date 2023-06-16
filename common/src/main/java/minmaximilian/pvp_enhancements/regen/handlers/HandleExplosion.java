@@ -35,7 +35,6 @@ public class HandleExplosion {
         List<BlockTracker> blockTrackerList = blockPosList.stream()
             .filter(blockPos -> filterBlocks(level.getBlockState(blockPos), explosion))
             .map(blockPos -> createBlockTrackers(level, blockPos))
-            .sorted(new BlockTracker.BlockTrackerComparator())
             .collect(Collectors.toList());
 
         Lists.reverse(blockTrackerList)

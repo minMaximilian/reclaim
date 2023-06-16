@@ -11,7 +11,6 @@ import net.minecraft.world.level.ChunkPos;
 public class ActiveChunks {
     private static Map<ResourceLocation, Set<ChunkPos>> activeChunks = new ConcurrentHashMap<>();
 
-
     public static boolean containsChunk(ResourceLocation resourceLocation, ChunkPos pos) {
         if (activeChunks.containsKey(resourceLocation)) return activeChunks.get(resourceLocation)
             .contains(pos);

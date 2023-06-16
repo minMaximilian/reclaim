@@ -23,7 +23,8 @@
     "maxs_pvp_enhancements.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
-    "minecraft": ">=1.19.2"
+    "minecraft": "${minecraft_version}",
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": ">=${fabric_api_version}"
   }
 }

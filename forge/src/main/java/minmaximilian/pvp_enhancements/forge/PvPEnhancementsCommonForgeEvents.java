@@ -8,6 +8,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -23,6 +24,7 @@ public class PvPEnhancementsCommonForgeEvents {
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onRegisterCommands);
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onLightningStrike);
         forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onItemExpiry);
+        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onBlockPlace);
 
         Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
             forgeEventBus.addListener(PvPEnhancementsCBCEvents::onPenetration);
@@ -42,6 +44,10 @@ public class PvPEnhancementsCommonForgeEvents {
 
     public static void onExplosion(ExplosionEvent.Detonate explosionEvent) {
         PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(), explosionEvent.getExplosion());
+    }
+
+    private static void onBlockPlace(BlockEvent.EntityPlaceEvent blockEvent) {
+        PvPEnhancementsCommonEvents.onBlockPlace(blockEvent.getLevel(), blockEvent.getEntity(), blockEvent.getPlacedBlock(), blockEvent.getPos());
     }
 
     public static void onWorldTick(TickEvent.LevelTickEvent event) {

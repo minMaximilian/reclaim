@@ -5,7 +5,7 @@ public class PvPEnhancementsCommonConfig extends PvPEnhancementsBase {
     public final ConfigBool healExplosions = b(true, "healExplosions", Comments.healExplosions);
     public final ConfigBool healCreeperExplosions = b(false, "healCreeperExplosions", Comments.healCreeperExplosions);
     public final ConfigBool healFires = b(true, "healFires", Comments.healFires);
-    public final ConfigInt delayInTicksBeforeHealingDamage = i(6000, 3000, "delayInTicksBeforeHealingDamage", Comments.delayInTicksBeforeHealingDamage);
+    public final ConfigInt delayInTicksBeforeHealingDamage = i(12000, 1200, "delayInTicksBeforeHealingDamage", Comments.delayInTicksBeforeHealingDamage);
     public final ConfigInt ticksBetweenHeals = i(20, 1, 100, "ticksBetweenHeals", Comments.ticksBetweenHeals);
 
     @Override

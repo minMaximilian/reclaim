@@ -55,7 +55,7 @@ public class HephaestusBag extends Item {
 
         level.playSound(null, player.getOnPos().above(10), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.MASTER, 1.0F, 0.8F + 0.4F * level.getRandom().nextFloat());
 
-        HandleLevelTick.healChunks(ChunkPosUtils.getAdjacentChunkPositions(new ChunkPos(player.getOnPos())));
+        HandleLevelTick.healChunks(level.dimension().location(), ChunkPosUtils.getAdjacentChunkPositions(new ChunkPos(player.getOnPos())));
 
         if (!player.isCreative()) setCharged(stack, false);
 

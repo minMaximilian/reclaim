@@ -8,7 +8,20 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+    Project common = project(":common")
+    accessWidenerPath = common.loom.accessWidenerPath
+
+    runs {
+        datagen {
+            client()
+
+            name "Minecraft Data"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${common.file("common/src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.modid=maxs_pvp_enhancements"
+            vmArg "-Dporting_lib.datagen.existing_resources=${common.file("common/src/main/resources")}"
+        }
+    }
 }
 
 configurations {
@@ -76,6 +89,10 @@ dependencies {
 }
 
 processResources {
+    from(rootProject.file("common/src/main/resources")) {
+        include("resourcepacks/")
+    }
+
     // set up properties for filling into metadata
     Map<String, String> properties = Map.of(
         "version", version,

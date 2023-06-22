@@ -74,6 +74,8 @@ public class ChunkData {
     }
 
     public static ChunkTracker getChunkTracker(ResourceLocation resourceLocation, ChunkPos chunkPos) {
-        return getResourceLocation(resourceLocation).get(chunkPos);
+        if (getResourceLocation(resourceLocation) != null)
+            return getResourceLocation(resourceLocation).get(chunkPos);
+        return null;
     }
 }

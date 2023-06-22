@@ -63,4 +63,8 @@ public class PvPEnhancementsCommonEvents {
     public static void onBlockPlace(LevelAccessor level, @Nullable Entity entity, BlockState placedBlock, BlockPos pos) {
         HandleBlockPlacement.handleBlockPlacement(level, entity, placedBlock, pos);
     }
+
+    public static void onBlockPlace(Level level, BlockPos blockPos) {
+        HandleBlockPlacement.handleBlockPlacement(level, blockPos);
+    }
 }

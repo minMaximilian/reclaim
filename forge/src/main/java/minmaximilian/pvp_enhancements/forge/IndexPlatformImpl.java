@@ -1,7 +1,7 @@
 package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
-import minmaximilian.pvp_enhancements.forge.data.PvPRegistrateForge;
+import minmaximilian.pvp_enhancements.data.PvPRegistrateForge;
 import net.minecraftforge.fml.ModList;
 
 public class IndexPlatformImpl {

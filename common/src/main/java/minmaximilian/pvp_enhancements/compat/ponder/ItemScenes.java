@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.Selection;
 
-import minmaximilian.pvp_enhancements.item.Items;
+import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -19,7 +19,7 @@ public class ItemScenes {
 
         scene.idle(20);
 
-        scene.world.createItemEntity(new Vec3(-0.60, 1.5, 2.5), new Vec3(0.5, 0, 0), new ItemStack(Items.HEPHAESTUS_BAG.get(), 1));
+        scene.world.createItemEntity(new Vec3(-0.60, 1.5, 2.5), new Vec3(0.5, 0, 0), new ItemStack(PvPEnhancementsItems.HEPHAESTUS_BAG.get(), 1));
 
         scene.idle(20);
 

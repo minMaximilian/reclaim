@@ -1,10 +1,11 @@
-package minmaximilian.pvp_enhancements.data;
+package minmaximilian.pvp_enhancements.data.fabric;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
 import minmaximilian.pvp_enhancements.PvPEnhancements;
+import minmaximilian.pvp_enhancements.data.DataGeneratorRoot;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;

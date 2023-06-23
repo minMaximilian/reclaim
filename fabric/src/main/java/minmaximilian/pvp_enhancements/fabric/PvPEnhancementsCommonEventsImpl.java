@@ -1,9 +1,10 @@
-package minmaximilian.pvp_enhancements;
+package minmaximilian.pvp_enhancements.fabric;
 
 import java.util.List;
 
 import com.mojang.brigadier.CommandDispatcher;
 
+import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import minmaximilian.pvp_enhancements.compat.Mods;
 import minmaximilian.pvp_enhancements.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.event.BlockPlaceEvents;
@@ -28,18 +29,18 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 
-public class PvPEnhancementsCommonFabricEvents {
+public class PvPEnhancementsCommonEventsImpl {
 
     public static void register() {
-        ServerWorldEvents.LOAD.register(PvPEnhancementsCommonFabricEvents::onServerStarting);
-        ExplosionEvents.DETONATE.register(PvPEnhancementsCommonFabricEvents::onExplosion);
-        ServerTickEvents.START_WORLD_TICK.register(PvPEnhancementsCommonFabricEvents::onWorldTick);
-        ServerChunkEvents.CHUNK_LOAD.register(PvPEnhancementsCommonFabricEvents::onChunkLoad);
-        ServerChunkEvents.CHUNK_UNLOAD.register(PvPEnhancementsCommonFabricEvents::onChunkUnload);
-        CommandRegistrationCallback.EVENT.register(PvPEnhancementsCommonFabricEvents::onRegisterCommands);
-        EntityEvents.STRUCK_BY_LIGHTNING.register(PvPEnhancementsCommonFabricEvents::onLightningStrike);
-        BlockPlaceEvents.PLACE.register(PvPEnhancementsCommonFabricEvents::onBlockPlace);
-        ServerEntityEvents.ENTITY_UNLOAD.register(PvPEnhancementsCommonFabricEvents::onItemExpiry);
+        ServerWorldEvents.LOAD.register(PvPEnhancementsCommonEventsImpl::onServerStarting);
+        ExplosionEvents.DETONATE.register(PvPEnhancementsCommonEventsImpl::onExplosion);
+        ServerTickEvents.START_WORLD_TICK.register(PvPEnhancementsCommonEventsImpl::onWorldTick);
+        ServerChunkEvents.CHUNK_LOAD.register(PvPEnhancementsCommonEventsImpl::onChunkLoad);
+        ServerChunkEvents.CHUNK_UNLOAD.register(PvPEnhancementsCommonEventsImpl::onChunkUnload);
+        CommandRegistrationCallback.EVENT.register(PvPEnhancementsCommonEventsImpl::onRegisterCommands);
+        EntityEvents.STRUCK_BY_LIGHTNING.register(PvPEnhancementsCommonEventsImpl::onLightningStrike);
+        BlockPlaceEvents.PLACE.register(PvPEnhancementsCommonEventsImpl::onBlockPlace);
+        ServerEntityEvents.ENTITY_UNLOAD.register(PvPEnhancementsCommonEventsImpl::onItemExpiry);
         Mods.CREATEBIGCANNONS.executeIfInstalled(() -> PvPEnhancementsCBCEvents::register);
     }
 

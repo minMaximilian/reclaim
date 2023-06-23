@@ -1,7 +1,7 @@
 package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
-import minmaximilian.pvp_enhancements.data.PvPRegistrateForge;
+import minmaximilian.pvp_enhancements.data.PvPRegistrateImpl;
 import net.minecraftforge.fml.ModList;
 
 public class IndexPlatformImpl {
@@ -14,6 +14,6 @@ public class IndexPlatformImpl {
     }
 
     public static PvPRegistrate createRegistrate(String modid) {
-        return PvPRegistrateForge.create(modid);
+        return PvPRegistrateImpl.create(modid);
     }
 }

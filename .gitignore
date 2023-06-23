@@ -8,6 +8,7 @@ out/
 output/
 bin/
 libs/
+**/generated
 
 .classpath
 .project

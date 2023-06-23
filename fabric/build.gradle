@@ -17,9 +17,9 @@ loom {
 
             name "Minecraft Data"
             vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${common.file("common/src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.output-dir=${common.file("src/generated/resources")}"
             vmArg "-Dfabric-api.datagen.modid=maxs_pvp_enhancements"
-            vmArg "-Dporting_lib.datagen.existing_resources=${common.file("common/src/main/resources")}"
+            vmArg "-Dporting_lib.datagen.existing_resources=${common.file("src/main/resources")}"
         }
     }
 }

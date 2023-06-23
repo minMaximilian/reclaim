@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "minmaximilian.pvp_enhancements.PvPEnhancementsFabric"
+      "minmaximilian.pvp_enhancements.fabric.PvPEnhancementsImpl"
     ],
     "fabric-datagen": [
-      "minmaximilian.pvp_enhancements.data.DataGenFabric"
+      "minmaximilian.pvp_enhancements.data.fabric.DataGenFabric"
     ]
   },
   "mixins": [

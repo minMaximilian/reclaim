@@ -1,5 +1,6 @@
-package minmaximilian.pvp_enhancements;
+package minmaximilian.pvp_enhancements.forge;
 
+import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import minmaximilian.pvp_enhancements.compat.Mods;
 import minmaximilian.pvp_enhancements.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
@@ -13,17 +14,17 @@ import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
-public class PvPEnhancementsCommonForgeEvents {
+public class PvPEnhancementsCommonEventsImpl {
     public static void register(IEventBus forgeEventBus) {
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onServerStarting);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onExplosion);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onWorldTick);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onChunkLoad);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onChunkUnload);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onRegisterCommands);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onLightningStrike);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onItemExpiry);
-        forgeEventBus.addListener(PvPEnhancementsCommonForgeEvents::onBlockPlace);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onServerStarting);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onExplosion);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onWorldTick);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onChunkLoad);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onChunkUnload);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onRegisterCommands);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onLightningStrike);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onItemExpiry);
+        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onBlockPlace);
 
         Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
             forgeEventBus.addListener(PvPEnhancementsCBCEvents::onPenetration);

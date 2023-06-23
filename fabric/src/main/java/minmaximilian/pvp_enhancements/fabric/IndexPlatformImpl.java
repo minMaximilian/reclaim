@@ -2,7 +2,6 @@ package minmaximilian.pvp_enhancements.fabric;
 
 import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
-import minmaximilian.pvp_enhancements.data.PvPRegistrateImpl;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class IndexPlatformImpl {
@@ -15,6 +14,6 @@ public class IndexPlatformImpl {
     }
 
     public static PvPRegistrate createRegistrate(String modid) {
-        return PvPRegistrateImpl.create(modid);
+        return new PvPRegistrate(modid);
     }
 }

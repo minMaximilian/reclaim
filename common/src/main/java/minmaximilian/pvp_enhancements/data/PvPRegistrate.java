@@ -2,8 +2,8 @@ package minmaximilian.pvp_enhancements.data;
 
 import com.tterrag.registrate.AbstractRegistrate;
 
-public abstract class PvPRegistrate extends AbstractRegistrate<PvPRegistrate> {
-    protected PvPRegistrate(String modid) {
+public class PvPRegistrate extends AbstractRegistrate<PvPRegistrate> {
+    public PvPRegistrate(String modid) {
         super(modid);
     }
 

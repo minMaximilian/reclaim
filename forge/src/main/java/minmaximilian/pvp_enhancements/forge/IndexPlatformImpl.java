@@ -1,7 +1,7 @@
 package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
-import minmaximilian.pvp_enhancements.data.PvPRegistrateImpl;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 
 public class IndexPlatformImpl {
@@ -14,6 +14,11 @@ public class IndexPlatformImpl {
     }
 
     public static PvPRegistrate createRegistrate(String modid) {
-        return PvPRegistrateImpl.create(modid);
+        return new PvPRegistrate(modid) {
+            @Override
+            public PvPRegistrate registerEventListeners(Object bus) {
+                return super.registerEventListeners((IEventBus) bus);
+            }
+        };
     }
 }

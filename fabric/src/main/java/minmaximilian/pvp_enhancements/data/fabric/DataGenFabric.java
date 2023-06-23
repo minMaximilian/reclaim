@@ -17,7 +17,7 @@ public class DataGenFabric implements DataGeneratorEntrypoint {
         ExistingFileHelper helper = new ExistingFileHelper(
             Set.of(resources), Set.of("maxs_pvp_enhancements"), true, null, null
         );
-        DataGeneratorRoot.register(fabricDataGenerator, helper, true, true);
+        DataGeneratorRoot.register(fabricDataGenerator);
         PvPEnhancements.REGISTRATE.setupDatagen(fabricDataGenerator, helper);
     }
 }

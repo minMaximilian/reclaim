@@ -86,15 +86,9 @@ jobs:
                     mv forge/build/libs/*.jar forge/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-forge-nightly-${{ steps.get_hash.outputs.sha_short }}.jar
 
             -   name: Send built file to discord
-                if: github.event_name == 'push' && github.repository_id == '634260349'
+                if: github.event_name == 'push' && github.repository_id == '634260349' && contains(github.head_ref, '/dev')
                 uses: sinshutu/upload-to-discord@master
                 env:
                     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
                 with:
                     args: ./forge/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-forge-nightly-${{ steps.get_hash.outputs.sha_short }}.jar ./fabric/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-fabric-nightly-${{ steps.get_hash.outputs.sha_short }}.jar
-
-            -   name: Archive Artifacts
-                uses: actions/upload-artifact@v3.1.2
-                with:
-                    name: ${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
-                    path: ${{ steps.find_jars.outputs.jars }}

@@ -2,7 +2,7 @@ package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
 import minmaximilian.pvp_enhancements.compat.Mods;
-import minmaximilian.pvp_enhancements.compat.PvPEnhancementsCBCEvents;
+import minmaximilian.pvp_enhancements.forge.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;

@@ -20,7 +20,7 @@ public class BlockPlaceMixin {
             target = "Lnet/minecraft/world/item/BlockItem;place(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/InteractionResult;"
         )
     )
-    private InteractionResult afterPlace(InteractionResult placeResult, UseOnContext context) {
+    private InteractionResult maxs_pvp_enhancements$afterPlace(InteractionResult placeResult, UseOnContext context) {
         if (placeResult.consumesAction())
             BlockPlaceEvents.PLACE.invoker().onPlace(new BlockPlaceContext(context));
         return placeResult;

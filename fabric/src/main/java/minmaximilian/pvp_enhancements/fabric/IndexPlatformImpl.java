@@ -1,12 +1,16 @@
 package minmaximilian.pvp_enhancements.fabric;
 
-import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 
 public class IndexPlatformImpl {
+    public static final ResourceLocation ERROR_ID = new ResourceLocation("if_you_see_this", "something_went_wrong");
+
     public static int getModGroupId() {
-        return ItemGroupUtil.expandArrayAndGetId();
+        return FabricItemGroupBuilder.build(ERROR_ID, Items.AIR::getDefaultInstance).getId();
     }
 
     public static boolean isModLoaded(String id) {

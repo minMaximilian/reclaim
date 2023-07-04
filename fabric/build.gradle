@@ -51,13 +51,15 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
 
+    implementation("com.github.LlamaLad7:MixinExtras:0.1.1")
+    annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
+
     // dependencies
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
-    modImplementation("com.tterrag.registrate_fabric:Registrate:${registrate_fabric_version}")
-    modImplementation("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:$fabric_port_lib_version+$minecraft_version")
-    modImplementation("curse.maven:forge-config-api-port-fabric-547434:$fabric_config_port")
-    modImplementation("com.electronwill.night-config:core:$night_config_version")
-    modImplementation("com.electronwill.night-config:toml:$night_config_version")
+    modImplementation(include("com.tterrag.registrate_fabric:Registrate:${registrate_fabric_version}"))
+    modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:$fabric_config_port"))
+    modImplementation(include("com.electronwill.night-config:core:$night_config_version"))
+    modImplementation(include("com.electronwill.night-config:toml:$night_config_version"))
 
     // Compatibilities
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}") { transitive = false }

@@ -44,7 +44,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     // Dependencies
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
+    modImplementation(include("com.tterrag.registrate:Registrate:${registrate_forge_version}"))
 
     // Compatibilities
     modCompileOnly("com.rbasamoyai:createbigcannons-forge-${minecraft_version}:${cbc_version}") { transitive = false }

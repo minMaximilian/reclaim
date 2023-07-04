@@ -24,7 +24,6 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
     modImplementation("com.tterrag.registrate_fabric:Registrate:${registrate_fabric_version}")
 
-
     // Compatibilities
     modApi("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
     modApi("com.rbasamoyai:createbigcannons-common-${minecraft_version}:${cbc_version}")

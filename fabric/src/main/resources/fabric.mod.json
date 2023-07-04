@@ -15,6 +15,9 @@
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
+    "preLaunch": [
+      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
+    ],
     "main": [
       "minmaximilian.pvp_enhancements.fabric.PvPEnhancementsImpl"
     ],

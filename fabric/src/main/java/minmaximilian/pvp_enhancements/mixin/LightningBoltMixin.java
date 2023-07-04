@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LightningBolt;
 @Mixin(LightningBolt.class)
 public class LightningBoltMixin {
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;thunderHit(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LightningBolt;)V"))
-    private boolean shouldStrikeEntity(Entity entity, ServerLevel level, LightningBolt lightningBolt) {
+    private boolean maxs_pvp_enhancements$shouldStrikeEntity(Entity entity, ServerLevel level, LightningBolt lightningBolt) {
         return !EntityEvents.STRUCK_BY_LIGHTNING.invoker().onEntityStruckByLightning(entity, lightningBolt);
     }
 }

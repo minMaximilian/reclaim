@@ -21,6 +21,7 @@ def getGitHash = { ->
 boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
 
 subprojects {
+    apply plugin: "maven-publish"
     apply plugin: "dev.architectury.loom"
     apply plugin: "io.github.juuxel.loom-quiltflower"
 
@@ -53,6 +54,30 @@ subprojects {
         })
 
         // see each subproject for dependencies.
+    }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = rootProject.archives_base_name
+                version = version
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/minmaximilian/maxs-pvp-enhancements"
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+            maven {
+                name = "realRobotixMaven"
+                url = "https://maven.realrobotix.me/artifactory/maxs-pvp-enhancements"
+                credentials(PasswordCredentials)
+            }
+        }
     }
 }
 

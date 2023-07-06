@@ -9,10 +9,10 @@ on:
 jobs:
     build-and-publish:
         runs-on: ubuntu-latest
-
+        timeout-minutes: 30
         steps:
             -   name: Checkout code
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -   name: Get branch name
                 id: get_branch
@@ -35,61 +35,77 @@ jobs:
                     java-version: 17
                     distribution: temurin
 
-            -   name: Setup Gradle
-                uses: gradle/gradle-build-action@v2.4.2
-                with:
-                    gradle-version: 7.2
-
             -   name: Validate Gradle Wrapper
                 uses: gradle/wrapper-validation-action@v1
 
             -   name: Grant execute permissions to gradlew
                 run: chmod +x gradlew
 
-            -   name: Create fabric_loader_dependencies.json
-                run: |
-                    mkdir -p fabric/run/config
-                    echo '{
-                      "version": 1,
-                      "overrides": {
-                        "forgeconfigapiport": {
-                          "-depends": {
-                            "com_electronwill_night-config_core": "*",
-                            "com_electronwill_night-config_toml": "*"
-                          }
-                        }
-                      }
-                    }' > fabric/run/config/fabric_loader_dependencies.json
+            -   name: Setup Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    gradle-home-cache-includes: |
+                        caches
+                        loom-cache
 
             -   name: Run Data Gen
-                run: ./gradlew runDatagen --stacktrace --no-daemon
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: runDatagen
 
             -   name: Build
-                run: ./gradlew build
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: build
+
+            -   name: Publish to GitHub Packages
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                if: github.event_name == 'push' && env.GITHUB_TOKEN != ''
+                continue-on-error: true
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: publishMavenJavaPublicationToGitHubPackagesRepository
+
+            -   name: Publish to realRobotix Maven
+                env:
+                    MAVEN_USER: ${{ secrets.MAVEN_USER }}
+                    MAVEN_ACCESS_TOKEN: ${{ secrets.MAVEN_ACCESS_TOKEN }}
+                if: github.event_name == 'push' && env.MAVEN_USER != '' && env.MAVEN_ACCESS_TOKEN != ''
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: |
+                        publishMavenJavaPublicationToRealRobotixMavenRepository
+                        -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }}
+                        -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
+
+            -   name: Find jars
+                id: find_jars
+                run: |
+                    EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+                    echo "jars<<$EOF" >> $GITHUB_OUTPUT
+                    find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}\+($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-${{ steps.read_properties.outputs.minecraft_version }}.jar" >> $GITHUB_OUTPUT
+                    echo "$EOF" >> $GITHUB_OUTPUT
 
             -   name: Send building message to discord
-                if: github.event_name == 'push' && github.repository_id == '634260349'
+                env:
+                    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+                if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
                 uses: realRobotix/action-discord-notifier@release-master
                 with:
                     webhook: ${{ secrets.DISCORD_WEBHOOK }}
                     message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
 
-            -   name: Remove extra JARs
-                run: |
-                    rm fabric/build/libs/*-dev-shadow.jar
-                    rm fabric/build/libs/*-sources.jar
-                    rm forge/build/libs/*-dev-shadow.jar
-                    rm forge/build/libs/*-sources.jar
-
-            -   name: Rename Jars
-                run: |
-                    mv fabric/build/libs/*.jar fabric/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-fabric-nightly-${{ steps.get_hash.outputs.sha_short }}.jar
-                    mv forge/build/libs/*.jar forge/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-forge-nightly-${{ steps.get_hash.outputs.sha_short }}.jar
-
             -   name: Send built file to discord
-                if: github.event_name == 'push' && github.repository_id == '634260349'
-                uses: sinshutu/upload-to-discord@master
                 env:
                     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+                if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
+                uses: sinshutu/upload-to-discord@master
                 with:
-                    args: ./forge/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-forge-nightly-${{ steps.get_hash.outputs.sha_short }}.jar ./fabric/build/libs/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-fabric-nightly-${{ steps.get_hash.outputs.sha_short }}.jar
+                    args: ${{ steps.find_jars.outputs.jars }}
+
+            -   name: Archive Artifacts
+                uses: actions/upload-artifact@v3.1.2
+                with:
+                    name: ${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
+                    path: ${{ steps.find_jars.outputs.jars }}

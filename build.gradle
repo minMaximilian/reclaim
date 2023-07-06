@@ -9,6 +9,17 @@ architectury {
     minecraft = rootProject.minecraft_version
 }
 
+def getGitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
+
 subprojects {
     apply plugin: "dev.architectury.loom"
     apply plugin: "io.github.juuxel.loom-quiltflower"
@@ -53,8 +64,7 @@ allprojects {
     archivesBaseName = rootProject.archives_base_name
     group = rootProject.maven_group
 
-    String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-    version = "${mod_version}+${project.name}-${minecraft_version}" + (buildNumber != null ? "-${buildNumber}" : "")
+    version = "${mod_version}${ci?"-nightly-${getGitHash}":""}+${project.name}-${minecraft_version}"
 
     repositories {
 
@@ -70,6 +80,6 @@ allprojects {
 
     machete {
         // disable machete locally for faster builds
-        enabled = buildNumber != null
+        enabled = ci
     }
 }

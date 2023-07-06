@@ -66,7 +66,7 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = "https://maven.pkg.github.com/minmaximilian/maxs-pvp-enhancements"
+                url = "https://maven.pkg.github.com/minMaximilian/maxs-pvp-enhancements"
                 credentials {
                     username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
                     password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")

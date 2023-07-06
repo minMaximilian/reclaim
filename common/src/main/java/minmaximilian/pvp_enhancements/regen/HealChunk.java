@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
@@ -43,8 +44,8 @@ public class HealChunk {
         if (blockTracker.getBlockState()
             .getBlock()
             .equals(Blocks.NETHER_PORTAL))
-            level.setBlock(blockPos, Blocks.FIRE.defaultBlockState(), 3);
-        else level.setBlock(blockPos, blockTracker.getBlockState(), 3);
+            level.setBlock(blockPos, Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
+        else level.setBlock(blockPos, blockTracker.getBlockState(), Block.UPDATE_ALL);
 
         if (blockTracker.getCompoundTag() != null && blockTracker.getCompoundTag()
             .getAllKeys()

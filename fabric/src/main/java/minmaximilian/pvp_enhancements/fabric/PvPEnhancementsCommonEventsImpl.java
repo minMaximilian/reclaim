@@ -49,6 +49,7 @@ public class PvPEnhancementsCommonEventsImpl {
     }
 
     public static void onItemExpiry(Entity entity, ServerLevel serverLevel) {
+        if (serverLevel.isClientSide()) return;
         if (entity instanceof ItemEntity item)
             if (item.getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get())
                 item.setUnlimitedLifetime();

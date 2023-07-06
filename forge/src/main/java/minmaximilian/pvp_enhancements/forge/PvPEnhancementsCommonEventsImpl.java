@@ -34,7 +34,7 @@ public class PvPEnhancementsCommonEventsImpl {
     }
 
     public static void onItemExpiry(ItemExpireEvent event) {
-        if (event.getEntity().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get() && event.getEntity().getOwner() != null)
+        if (event.getEntity().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get())
             event.setCanceled(true);
     }
 

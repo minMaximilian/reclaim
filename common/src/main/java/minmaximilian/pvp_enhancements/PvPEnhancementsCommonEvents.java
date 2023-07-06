@@ -40,6 +40,7 @@ public class PvPEnhancementsCommonEvents {
     }
 
     public static void onLevelTick(Level level) {
+        if (level.isClientSide()) return;
         HandleLevelTick.handleLevelTick(level);
     }
 

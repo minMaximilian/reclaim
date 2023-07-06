@@ -59,16 +59,19 @@ jobs:
                     arguments: build
 
             -   name: Publish to GitHub Packages
-                if: github.event_name == 'push' #&& github.repository_id == '634260349'
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                if: github.event_name == 'push' && env.GITHUB_TOKEN != ''
                 continue-on-error: true
                 uses: gradle/gradle-build-action@v2
                 with:
                     arguments: publishMavenJavaPublicationToGitHubPackagesRepository
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             -   name: Publish to realRobotix Maven
-                if: github.event_name == 'push' #&& github.repository_id == '634260349'
+                env:
+                    MAVEN_USER: ${{ secrets.MAVEN_USER }}
+                    MAVEN_ACCESS_TOKEN: ${{ secrets.MAVEN_ACCESS_TOKEN }}
+                if: github.event_name == 'push' && env.MAVEN_USER != '' && env.MAVEN_ACCESS_TOKEN != ''
                 uses: gradle/gradle-build-action@v2
                 with:
                     arguments: |
@@ -85,17 +88,19 @@ jobs:
                     echo "$EOF" >> $GITHUB_OUTPUT
 
             -   name: Send building message to discord
-                if: false #github.event_name == 'push' && github.repository_id == '634260349'
+                env:
+                    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+                if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
                 uses: realRobotix/action-discord-notifier@release-master
                 with:
                     webhook: ${{ secrets.DISCORD_WEBHOOK }}
                     message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
 
             -   name: Send built file to discord
-                if: false #github.event_name == 'push' && github.repository_id == '634260349'
-                uses: sinshutu/upload-to-discord@master
                 env:
                     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+                if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
+                uses: sinshutu/upload-to-discord@master
                 with:
                     args: ${{ steps.find_jars.outputs.jars }}
 

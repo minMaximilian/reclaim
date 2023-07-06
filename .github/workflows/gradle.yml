@@ -44,7 +44,7 @@ jobs:
             -   name: Setup Gradle
                 uses: gradle/gradle-build-action@v2
                 with:
-                    gradle-cache-includes: |
+                    gradle-home-cache-includes: |
                         caches
                         loom-cache
 

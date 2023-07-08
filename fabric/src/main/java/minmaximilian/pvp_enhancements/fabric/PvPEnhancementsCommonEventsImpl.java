@@ -5,15 +5,12 @@ import java.util.List;
 import com.mojang.brigadier.CommandDispatcher;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
-import minmaximilian.pvp_enhancements.compat.Mods;
-import minmaximilian.pvp_enhancements.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.event.BlockPlaceEvents;
 import minmaximilian.pvp_enhancements.event.EntityEvents;
 import minmaximilian.pvp_enhancements.event.ExplosionEvents;
 import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.commands.CommandBuildContext;
@@ -40,18 +37,19 @@ public class PvPEnhancementsCommonEventsImpl {
         CommandRegistrationCallback.EVENT.register(PvPEnhancementsCommonEventsImpl::onRegisterCommands);
         EntityEvents.STRUCK_BY_LIGHTNING.register(PvPEnhancementsCommonEventsImpl::onLightningStrike);
         BlockPlaceEvents.PLACE.register(PvPEnhancementsCommonEventsImpl::onBlockPlace);
-        ServerEntityEvents.ENTITY_UNLOAD.register(PvPEnhancementsCommonEventsImpl::onItemExpiry);
-        Mods.CREATEBIGCANNONS.executeIfInstalled(() -> PvPEnhancementsCBCEvents::register);
+        EntityEvents.ITEM_DESPAWN_EVENT.register(PvPEnhancementsCommonEventsImpl::onItemDespawn);
+    }
+
+    public static boolean onItemDespawn(ItemEntity itemEntity) {
+        if (itemEntity.getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get()) {
+            itemEntity.setUnlimitedLifetime();
+            return true;
+        }
+        return false;
     }
 
     public static void onBlockPlace(BlockPlaceContext blockPlaceContext) {
         PvPEnhancementsCommonEvents.onBlockPlace(blockPlaceContext.getLevel(), blockPlaceContext.getClickedPos());
-    }
-
-    public static void onItemExpiry(Entity entity, ServerLevel serverLevel) {
-        if (entity instanceof ItemEntity item)
-            if (item.getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get())
-                item.setUnlimitedLifetime();
     }
 
     public static void onServerStarting(MinecraftServer server, ServerLevel level) {
@@ -74,12 +72,12 @@ public class PvPEnhancementsCommonEventsImpl {
         PvPEnhancementsCommonEvents.onChunkUnload(serverLevel, levelChunk);
     }
 
-    public static void onRegisterCommands(CommandDispatcher<CommandSourceStack> commandSourceStackCommandDispatcher, CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
+    public static void onRegisterCommands(CommandDispatcher<CommandSourceStack> commandSourceStackCommandDispatcher,
+        CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
         PvPEnhancementsCommonEvents.onLoadCommands(commandSourceStackCommandDispatcher);
     }
 
     public static boolean onLightningStrike(Entity entity, LightningBolt lightningBolt) {
-        PvPEnhancementsCommonEvents.onLightningStrike(entity, lightningBolt);
-        return true;
+        return PvPEnhancementsCommonEvents.onLightningStrike(entity, lightningBolt);
     }
 }

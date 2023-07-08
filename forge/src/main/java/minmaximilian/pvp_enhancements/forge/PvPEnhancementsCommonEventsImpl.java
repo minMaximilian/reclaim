@@ -1,8 +1,6 @@
 package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
-import minmaximilian.pvp_enhancements.compat.Mods;
-import minmaximilian.pvp_enhancements.forge.compat.PvPEnhancementsCBCEvents;
 import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -25,17 +23,13 @@ public class PvPEnhancementsCommonEventsImpl {
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onLightningStrike);
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onItemExpiry);
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onBlockPlace);
-
-        Mods.CREATEBIGCANNONS.executeIfInstalled(() -> {
-            forgeEventBus.addListener(PvPEnhancementsCBCEvents::onPenetration);
-            return () -> {
-            };
-        });
     }
 
     public static void onItemExpiry(ItemExpireEvent event) {
-        if (event.getEntity().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get() && event.getEntity().getOwner() != null)
+        if (event.getEntity().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get()) {
             event.setCanceled(true);
+            event.getEntity().setUnlimitedLifetime();
+        }
     }
 
     public static void onServerStarting(LevelEvent.Load event) {

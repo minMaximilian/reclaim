@@ -51,7 +51,7 @@ jobs:
                         loom-cache
 
             -   name: Run Data Gen
-                uses: gradle/gradle-build-action@2.4.2
+                uses: gradle/gradle-build-action@v2
                 with:
                     arguments: runDatagen
 

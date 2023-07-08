@@ -1,5 +1,8 @@
 package minmaximilian.pvp_enhancements;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import minmaximilian.pvp_enhancements.base.PvPEnhancementsCreativeModeTab;
 import minmaximilian.pvp_enhancements.block.PvPEnhancementsBlocks;
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
@@ -8,6 +11,7 @@ import minmaximilian.pvp_enhancements.regen.SavedChunkDataManager;
 import net.minecraft.resources.ResourceLocation;
 
 public class PvPEnhancements {
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "maxs_pvp_enhancements";
 
     public static final PvPRegistrate REGISTRATE = IndexPlatform.createRegistrate(MOD_ID);

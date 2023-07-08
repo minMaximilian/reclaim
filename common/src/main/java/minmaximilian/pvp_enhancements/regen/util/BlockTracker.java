@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,6 +14,10 @@ public class BlockTracker {
     private CompoundTag compoundTag;
     private BlockPos blockPos;
     private int ticksLeft;
+
+    public BlockTracker(BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos) {
+        this(blockState, compoundTag, blockPos, PvPEnhancementsConfig.COMMON.delayInTicksBeforeHealingDamage.get());
+    }
 
     public BlockTracker(BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos, int ticksLeft) {
         this.blockState = blockState;

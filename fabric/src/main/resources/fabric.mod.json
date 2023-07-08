@@ -26,7 +26,8 @@
     ]
   },
   "mixins": [
-    "maxs_pvp_enhancements.mixins.json"
+    "maxs_pvp_enhancements.mixins.json",
+    "maxs_pvp_enhancements-common.mixins.json"
   ],
   "depends": {
     "minecraft": "${minecraft_version}",

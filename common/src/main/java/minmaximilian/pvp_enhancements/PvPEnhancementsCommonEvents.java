@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.brigadier.CommandDispatcher;
 
-import minmaximilian.pvp_enhancements.compat.handlers.HandleCreateBigCannons;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleBlockPlacement;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleChunkLoading;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleCommandRegistration;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import rbasamoyai.createbigcannons.multiloader.event_classes.OnCannonBreakBlock;
 
 public class PvPEnhancementsCommonEvents {
     public static void onExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
@@ -44,10 +42,6 @@ public class PvPEnhancementsCommonEvents {
         HandleLevelTick.handleLevelTick(level);
     }
 
-    public static void handlePenetration(OnCannonBreakBlock onCannonBreakBlock) {
-        HandleCreateBigCannons.handlePenetration(onCannonBreakBlock);
-    }
-
     public static void onServerStarting(LevelAccessor level) {
         if (level.isClientSide()) return;
         PvPEnhancements.SAVED_CHUNKS.levelLoaded(level);
@@ -57,8 +51,8 @@ public class PvPEnhancementsCommonEvents {
         HandleCommandRegistration.registerCommands(dispatcher);
     }
 
-    public static void onLightningStrike(Entity entity, LightningBolt lightning) {
-        HandleLightningStrike.handleLightningStrike(entity, lightning);
+    public static boolean onLightningStrike(Entity entity, LightningBolt lightning) {
+        return HandleLightningStrike.handleLightningStrike(entity, lightning);
     }
 
     public static void onBlockPlace(LevelAccessor level, @Nullable Entity entity, BlockState placedBlock, BlockPos pos) {

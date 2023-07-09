@@ -23,27 +23,36 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public class PvPEnhancementsCommonEvents {
+
     public static void onExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
         HandleExplosion.handleExplosion(level, blockPosList, explosion);
     }
 
     public static void onChunkLoad(LevelAccessor level, ChunkAccess chunk) {
-        if (level.isClientSide()) return;
+        if (level.isClientSide()) {
+            return;
+        }
         HandleChunkLoading.handleChunkLoading(level, chunk);
     }
 
     public static void onChunkUnload(LevelAccessor level, ChunkAccess chunk) {
-        if (level.isClientSide()) return;
+        if (level.isClientSide()) {
+            return;
+        }
         HandleChunkLoading.handleChunkUnloading(level, chunk);
     }
 
     public static void onLevelTick(Level level) {
-        if (level.isClientSide()) return;
+        if (level.isClientSide()) {
+            return;
+        }
         HandleLevelTick.handleLevelTick(level);
     }
 
     public static void onServerStarting(LevelAccessor level) {
-        if (level.isClientSide()) return;
+        if (level.isClientSide()) {
+            return;
+        }
         PvPEnhancements.SAVED_CHUNKS.levelLoaded(level);
     }
 
@@ -55,7 +64,8 @@ public class PvPEnhancementsCommonEvents {
         return HandleLightningStrike.handleLightningStrike(entity, lightning);
     }
 
-    public static void onBlockPlace(LevelAccessor level, @Nullable Entity entity, BlockState placedBlock, BlockPos pos) {
+    public static void onBlockPlace(LevelAccessor level, @Nullable Entity entity, BlockState placedBlock,
+        BlockPos pos) {
         HandleBlockPlacement.handleBlockPlacement(level, entity, placedBlock, pos);
     }
 

@@ -9,11 +9,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 
 public class ActiveChunks {
-    private static Map<ResourceLocation, Set<ChunkPos>> activeChunks = new ConcurrentHashMap<>();
+
+    private static final Map<ResourceLocation, Set<ChunkPos>> activeChunks = new ConcurrentHashMap<>();
 
     public static boolean containsChunk(ResourceLocation resourceLocation, ChunkPos pos) {
-        if (activeChunks.containsKey(resourceLocation)) return activeChunks.get(resourceLocation)
-            .contains(pos);
+        if (activeChunks.containsKey(resourceLocation)) {
+            return activeChunks.get(resourceLocation)
+                .contains(pos);
+        }
         return false;
     }
 
@@ -23,9 +26,12 @@ public class ActiveChunks {
     }
 
     public static void upsertChunk(ResourceLocation resourceLocation, ChunkPos pos) {
-        if (!ChunkData.containsChunk(resourceLocation, pos)) return;
-        if (!activeChunks.containsKey(resourceLocation))
+        if (!ChunkData.containsChunk(resourceLocation, pos)) {
+            return;
+        }
+        if (!activeChunks.containsKey(resourceLocation)) {
             activeChunks.put(resourceLocation, new HashSet<>());
+        }
         activeChunks.get(resourceLocation)
             .add(pos);
     }

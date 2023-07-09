@@ -13,8 +13,10 @@ import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 
 @Mixin(PartialBlockDamageManager.class)
 public class PartialBlockDamageManagerMixin {
+
     @Inject(method = "damageBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z"))
-    public void maxs_pvp_enhancements$PartialDamageDestroyed(BlockPos pos, int added, BlockState state, Level level, CallbackInfo ci) {
+    public void maxs_pvp_enhancements$partialDamageDestroyed(BlockPos pos, int added, BlockState state, Level level,
+        CallbackInfo ci) {
         HandleCreateBigCannons.handlePenetration(level, pos);
     }
 }

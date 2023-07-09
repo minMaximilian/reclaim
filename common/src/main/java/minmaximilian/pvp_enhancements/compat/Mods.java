@@ -22,8 +22,9 @@ public enum Mods {
     }
 
     public <T> Optional<T> runIfInstalled(Supplier<Supplier<T>> toRun) {
-        if (isLoaded())
+        if (isLoaded()) {
             return Optional.of(toRun.get().get());
+        }
         return Optional.empty();
     }
 

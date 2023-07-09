@@ -18,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 
 public class HephaestusBag extends Item {
+
     public static final String NBT_KEY_CHARGED = "Charged";
 
     public HephaestusBag(Properties properties) {
@@ -45,19 +46,27 @@ public class HephaestusBag extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
         final ItemStack stack = player.getItemInHand(hand);
-        if (level.isClientSide() && hand != InteractionHand.MAIN_HAND) return InteractionResultHolder.fail(stack);
+        if (level.isClientSide() && hand != InteractionHand.MAIN_HAND) {
+            return InteractionResultHolder.fail(stack);
+        }
 
-        if (!isCharged(stack)) return InteractionResultHolder.fail(stack);
+        if (!isCharged(stack)) {
+            return InteractionResultHolder.fail(stack);
+        }
 
         Vec3 lastScanCenter = Objects.requireNonNull(player.position());
 
 //        ScannerRenderer.INSTANCE.ping(lastScanCenter);
 
-        level.playSound(null, player.getOnPos().above(10), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.MASTER, 1.0F, 0.8F + 0.4F * level.getRandom().nextFloat());
+        level.playSound(null, player.getOnPos().above(10), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.MASTER, 1.0F,
+            0.8F + 0.4F * level.getRandom().nextFloat());
 
-        HandleLevelTick.healChunks(level.dimension().location(), ChunkPosUtils.getAdjacentChunkPositions(new ChunkPos(player.getOnPos())));
+        HandleLevelTick.healChunks(level.dimension().location(),
+            ChunkPosUtils.getAdjacentChunkPositions(new ChunkPos(player.getOnPos())));
 
-        if (!player.isCreative()) setCharged(stack, false);
+        if (!player.isCreative()) {
+            setCharged(stack, false);
+        }
 
         return InteractionResultHolder.success(stack);
     }

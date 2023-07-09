@@ -2,10 +2,12 @@ package minmaximilian.pvp_enhancements.regen.handlers;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import minmaximilian.pvp_enhancements.PvPEnhancements;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class HandleCommandRegistration {
 
@@ -17,10 +19,10 @@ public class HandleCommandRegistration {
             .executes(HandleCommandRegistration::forceHealAll));
     }
 
-    private static int forceHealAll(CommandContext<CommandSourceStack> context) {
+    private static int forceHealAll(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         context.getSource()
-            .getPlayer()
-            .displayClientMessage(Component.translatable("Healing Chunks"), false);
+            .getPlayerOrException()
+            .displayClientMessage(new TranslatableComponent(PvPEnhancements.MOD_ID + ".commands.healingChunks"), false);
         HandleLevelTick.healChunks();
         return 1;
     }

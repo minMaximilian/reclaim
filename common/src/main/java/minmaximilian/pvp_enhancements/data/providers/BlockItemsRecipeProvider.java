@@ -13,7 +13,7 @@ public abstract class BlockItemsRecipeProvider extends PvPRecipeProvider {
     GeneratedRecipe HEPHAESTUS_BAG = create(PvPEnhancementsItems.HEPHAESTUS_BAG)
         .unlockedBy(() -> Items.NETHER_STAR)
         .viaShaped(b -> b.define('+', Items.NETHER_STAR)
-            .define('#', () -> Items.ECHO_SHARD)
+            .define('#', () -> Items.AMETHYST_BLOCK)
             .pattern("###")
             .pattern("#+#")
             .pattern("###")

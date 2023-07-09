@@ -9,13 +9,11 @@ import minmaximilian.pvp_enhancements.event.BlockPlaceEvents;
 import minmaximilian.pvp_enhancements.event.EntityEvents;
 import minmaximilian.pvp_enhancements.event.ExplosionEvents;
 import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -73,7 +71,7 @@ public class PvPEnhancementsCommonEventsImpl {
     }
 
     public static void onRegisterCommands(CommandDispatcher<CommandSourceStack> commandSourceStackCommandDispatcher,
-        CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
+        boolean b) {
         PvPEnhancementsCommonEvents.onLoadCommands(commandSourceStackCommandDispatcher);
     }
 

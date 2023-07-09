@@ -58,7 +58,7 @@ dependencies {
     modLocalRuntime("com.rbasamoyai:createbigcannons-forge-${minecraft_version}:${cbc_version}") { transitive = false }
 
     // Development QOL
-    modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
+    modLocalRuntime("mezz.jei:jei-${minecraft_version}:${jei_version}") { transitive = false }
 }
 
 processResources {

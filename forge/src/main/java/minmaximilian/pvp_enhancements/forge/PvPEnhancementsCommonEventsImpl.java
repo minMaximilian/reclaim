@@ -6,10 +6,10 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.level.ChunkEvent;
-import net.minecraftforge.event.level.ExplosionEvent;
-import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class PvPEnhancementsCommonEventsImpl {
@@ -27,36 +27,36 @@ public class PvPEnhancementsCommonEventsImpl {
     }
 
     public static void onItemExpiry(ItemExpireEvent event) {
-        if (event.getEntity().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get()) {
+        if (event.getEntityItem().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get()) {
             event.setCanceled(true);
-            event.getEntity().setUnlimitedLifetime();
+            event.getEntityItem().setUnlimitedLifetime();
         }
     }
 
-    public static void onServerStarting(LevelEvent.Load event) {
-        PvPEnhancementsCommonEvents.onServerStarting(event.getLevel());
+    public static void onServerStarting(WorldEvent.Load event) {
+        PvPEnhancementsCommonEvents.onServerStarting(event.getWorld());
     }
 
     public static void onExplosion(ExplosionEvent.Detonate explosionEvent) {
-        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(),
+        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getWorld(), explosionEvent.getAffectedBlocks(),
             explosionEvent.getExplosion());
     }
 
     private static void onBlockPlace(BlockEvent.EntityPlaceEvent blockEvent) {
-        PvPEnhancementsCommonEvents.onBlockPlace(blockEvent.getLevel(), blockEvent.getEntity(),
+        PvPEnhancementsCommonEvents.onBlockPlace(blockEvent.getWorld(), blockEvent.getEntity(),
             blockEvent.getPlacedBlock(), blockEvent.getPos());
     }
 
-    public static void onWorldTick(TickEvent.LevelTickEvent event) {
-        PvPEnhancementsCommonEvents.onLevelTick(event.level);
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
+        PvPEnhancementsCommonEvents.onLevelTick(event.world);
     }
 
     public static void onChunkLoad(ChunkEvent.Load event) {
-        PvPEnhancementsCommonEvents.onChunkLoad(event.getLevel(), event.getChunk());
+        PvPEnhancementsCommonEvents.onChunkLoad(event.getWorld(), event.getChunk());
     }
 
     public static void onChunkUnload(ChunkEvent.Unload event) {
-        PvPEnhancementsCommonEvents.onChunkUnload(event.getLevel(), event.getChunk());
+        PvPEnhancementsCommonEvents.onChunkUnload(event.getWorld(), event.getChunk());
     }
 
     public static void onRegisterCommands(RegisterCommandsEvent event) {

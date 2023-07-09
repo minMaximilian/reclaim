@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - 1.19/dev
+    pull_request:
 
 permissions:
     packages: write
@@ -86,7 +87,7 @@ jobs:
                 run: |
                     EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
                     echo "jars<<$EOF" >> $GITHUB_OUTPUT
-                    find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}\+($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-${{ steps.read_properties.outputs.minecraft_version }}.jar" | sed 's/+/\\+/g' >> $GITHUB_OUTPUT
+                    find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}\+($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-${{ steps.read_properties.outputs.minecraft_version }}.jar" >> $GITHUB_OUTPUT
                     echo "$EOF" >> $GITHUB_OUTPUT
 
             -   name: Send building message to discord
@@ -104,7 +105,7 @@ jobs:
                 if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
                 uses: sinshutu/upload-to-discord@master
                 with:
-                    args: ${{ steps.find_jars.outputs.jars }}
+                    args: \\\"${{ steps.find_jars.outputs.jars }}\\\";filename=\\\"$(echo '${{ steps.find_jars.outputs.jars }}' | sed 's/+/-/g')\\\"
 
             -   name: Archive Artifacts
                 uses: actions/upload-artifact@v3.1.2

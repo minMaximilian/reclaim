@@ -3,7 +3,7 @@ name: Build and Publish
 on:
     push:
         branches:
-            - 1.19/dev
+            - '*/dev'
     pull_request:
 
 permissions:

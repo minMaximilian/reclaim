@@ -12,10 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class FireHandler {
 
     public static void handleFire(Level level, BlockPos blockPos) {
-        handleFire(level, blockPos, level.getBlockState(blockPos));
-    }
-
-    public static void handleFire(Level level, BlockPos blockPos, BlockState blockState) {
+        BlockState blockState = level.getBlockState(blockPos);
         if (!LegalPlacements.filterBlock(blockState)) {
             return;
         }

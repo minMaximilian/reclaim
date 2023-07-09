@@ -3,7 +3,10 @@ name: Build and Publish
 on:
     push:
         branches:
+            - 1.18/dev
             - 1.19/dev
+            - 1.20/dev
+    pull_request:
 
 permissions:
     packages: write
@@ -104,7 +107,7 @@ jobs:
                 if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
                 uses: sinshutu/upload-to-discord@master
                 with:
-                    args: echo '${{ steps.find_jars.outputs.jars }}' | sed 's/+/-/g'
+                    args: \\\"${{ steps.find_jars.outputs.jars }}\\\";filename=\\\"$(echo '${{ steps.find_jars.outputs.jars }}' | sed 's/+/-/g')\\\"
 
             -   name: Archive Artifacts
                 uses: actions/upload-artifact@v3.1.2

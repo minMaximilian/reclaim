@@ -107,7 +107,7 @@ jobs:
                 if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
                 uses: sinshutu/upload-to-discord@master
                 with:
-                    args: \\\"${{ steps.find_jars.outputs.jars }}\\\";filename=\\\"$(echo '${{ steps.find_jars.outputs.jars }}' | sed 's/+/-/g')\\\"
+                    args: \"${{ steps.find_jars.outputs.jars }}\";filename=\"$(echo '${{ steps.find_jars.outputs.jars }}' | sed 's/+/-/g')\"
 
             -   name: Archive Artifacts
                 uses: actions/upload-artifact@v3.1.2

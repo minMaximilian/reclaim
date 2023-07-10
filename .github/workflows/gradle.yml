@@ -104,8 +104,8 @@ jobs:
                     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
                 if: github.event_name == 'push' && env.DISCORD_WEBHOOK != ''
                 run: |
-                    for f in $''${{ steps.find_jars.outputs.jars }}''; do
-                        curl -F "file=@\"$f\";filename=\"$(echo $f | sed 's/+/-/g')\"" $DISCORD_WEBHOOK
+                    for f in $'${{ steps.find_jars.outputs.jars }}'; do
+                        curl -F "file=@\"$f\";filename=\"$(echo ${f##*/} | sed 's/+/-/g')\"" $DISCORD_WEBHOOK
                     done
 
             -   name: Archive Artifacts

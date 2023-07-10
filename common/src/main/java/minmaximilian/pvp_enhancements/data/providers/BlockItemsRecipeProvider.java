@@ -9,6 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
 public abstract class BlockItemsRecipeProvider extends PvPRecipeProvider {
+
     GeneratedRecipe HEPHAESTUS_BAG = create(PvPEnhancementsItems.HEPHAESTUS_BAG)
         .unlockedBy(() -> Items.NETHER_STAR)
         .viaShaped(b -> b.define('+', Items.NETHER_STAR)

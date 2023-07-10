@@ -5,7 +5,8 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LegalPlacements {
-    public static boolean filterBlocks(BlockState blockState) {
+
+    public static boolean filterBlock(BlockState blockState) {
         return filterBlocksInner(blockState);
     }
 
@@ -18,9 +19,11 @@ public class LegalPlacements {
         return true;
     }
 
-    public static boolean filterBlocks(BlockState blockState, Explosion explosion) {
+    public static boolean filterBlock(BlockState blockState, Explosion explosion) {
         if (!blockState.getBlock()
-            .dropFromExplosion(explosion)) return false;
+            .dropFromExplosion(explosion)) {
+            return false;
+        }
         return filterBlocksInner(blockState);
     }
 }

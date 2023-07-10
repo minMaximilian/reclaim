@@ -6,6 +6,7 @@ import java.util.Set;
 import net.minecraft.world.level.ChunkPos;
 
 public class ChunkPosUtils {
+
     public static Set<ChunkPos> getAdjacentChunkPositions(ChunkPos chunkPos) {
         int x = chunkPos.x;
         int z = chunkPos.z;

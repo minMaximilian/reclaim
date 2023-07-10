@@ -13,6 +13,7 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class PvPEnhancementsCommonEventsImpl {
+
     public static void register(IEventBus forgeEventBus) {
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onServerStarting);
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onExplosion);
@@ -37,11 +38,13 @@ public class PvPEnhancementsCommonEventsImpl {
     }
 
     public static void onExplosion(ExplosionEvent.Detonate explosionEvent) {
-        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(), explosionEvent.getExplosion());
+        PvPEnhancementsCommonEvents.onExplosion(explosionEvent.getLevel(), explosionEvent.getAffectedBlocks(),
+            explosionEvent.getExplosion());
     }
 
     private static void onBlockPlace(BlockEvent.EntityPlaceEvent blockEvent) {
-        PvPEnhancementsCommonEvents.onBlockPlace(blockEvent.getLevel(), blockEvent.getEntity(), blockEvent.getPlacedBlock(), blockEvent.getPos());
+        PvPEnhancementsCommonEvents.onBlockPlace(blockEvent.getLevel(), blockEvent.getEntity(),
+            blockEvent.getPlacedBlock(), blockEvent.getPos());
     }
 
     public static void onWorldTick(TickEvent.LevelTickEvent event) {

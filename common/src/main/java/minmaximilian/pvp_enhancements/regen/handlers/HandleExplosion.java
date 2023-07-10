@@ -1,14 +1,12 @@
 package minmaximilian.pvp_enhancements.regen.handlers;
 
-import static minmaximilian.pvp_enhancements.regen.util.LegalPlacements.filterBlocks;
+import static minmaximilian.pvp_enhancements.regen.util.LegalPlacements.filterBlock;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
 
 import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import minmaximilian.pvp_enhancements.regen.ChunkData;
@@ -24,31 +22,31 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class HandleExplosion {
-    private static final int delayInTicksBeforeHealingDamage = PvPEnhancementsConfig.COMMON.delayInTicksBeforeHealingDamage.get();
-    private static final int ticksBetweenHeals = PvPEnhancementsConfig.COMMON.ticksBetweenHeals.get();
+
     private static final boolean healCreeperExplosions = PvPEnhancementsConfig.COMMON.healCreeperExplosions.get();
 
     public static void handleExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
         if (!healCreeperExplosions && explosion.getSourceMob() != null && explosion.getSourceMob()
-            .getType() == EntityType.CREEPER) return;
+            .getType() == EntityType.CREEPER) {
+            return;
+        }
 
         List<BlockTracker> blockTrackerList = blockPosList.stream()
-            .filter(blockPos -> filterBlocks(level.getBlockState(blockPos), explosion))
+            .filter(blockPos -> filterBlock(level.getBlockState(blockPos), explosion))
             .map(blockPos -> createBlockTrackers(level, blockPos))
             .collect(Collectors.toList());
 
-        Lists.reverse(blockTrackerList)
+        blockTrackerList
             .forEach(blockTracker -> {
                 level.removeBlockEntity(blockTracker.getBlockPos());
                 level.setBlock(blockTracker.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
             });
 
-        int i = 0;
         Map<ChunkPos, List<BlockTracker>> needHealing = new ConcurrentHashMap<>();
         for (BlockTracker blockTracker : blockTrackerList) {
-            blockTracker.setTicksLeft(delayInTicksBeforeHealingDamage + ticksBetweenHeals * i++);
-            if (!needHealing.containsKey(new ChunkPos(blockTracker.getBlockPos())))
+            if (!needHealing.containsKey(new ChunkPos(blockTracker.getBlockPos()))) {
                 needHealing.put(new ChunkPos(blockTracker.getBlockPos()), new ArrayList<>());
+            }
             needHealing.get(new ChunkPos(blockTracker.getBlockPos()))
                 .add(blockTracker);
         }
@@ -64,6 +62,6 @@ public class HandleExplosion {
         if (blockEntity != null) {
             compoundTag = blockEntity.saveWithFullMetadata();
         }
-        return new BlockTracker(blockState, compoundTag, blockPos, delayInTicksBeforeHealingDamage);
+        return new BlockTracker(blockState, compoundTag, blockPos);
     }
 }

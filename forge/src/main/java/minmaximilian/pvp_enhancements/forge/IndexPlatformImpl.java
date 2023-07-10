@@ -5,6 +5,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 
 public class IndexPlatformImpl {
+
     public static int getModGroupId() {
         return -1;
     }

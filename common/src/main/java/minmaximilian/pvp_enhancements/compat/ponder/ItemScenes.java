@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class ItemScenes {
+
     public static void chargingHephaestusBag(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("items/hephaestus_bag", "Hephaestus' Bag");
         scene.configureBasePlate(0, 0, 5);
@@ -19,7 +20,8 @@ public class ItemScenes {
 
         scene.idle(20);
 
-        scene.world.createItemEntity(new Vec3(-0.60, 1.5, 2.5), new Vec3(0.5, 0, 0), new ItemStack(PvPEnhancementsItems.HEPHAESTUS_BAG.get(), 1));
+        scene.world.createItemEntity(new Vec3(-0.60, 1.5, 2.5), new Vec3(0.5, 0, 0),
+            new ItemStack(PvPEnhancementsItems.HEPHAESTUS_BAG.get(), 1));
 
         scene.idle(20);
 

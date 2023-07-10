@@ -15,13 +15,15 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProject
 
 @Mixin(AbstractBigCannonProjectile.class)
 public abstract class AbstractBigCannonProjectileMixin extends Entity {
+
     public AbstractBigCannonProjectileMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
     @Inject(method = "onDestroyBlock", at = @At("HEAD"))
-    public void maxs_pvp_enhancements$PenetrationDestroyed(BlockState state, BlockHitResult result, CallbackInfo ci) {
-        if (!level.isClientSide())
+    public void maxs_pvp_enhancements$penetrationDestroyed(BlockState state, BlockHitResult result, CallbackInfo ci) {
+        if (!level.isClientSide()) {
             HandleCreateBigCannons.handlePenetration(getLevel(), state, result);
+        }
     }
 }

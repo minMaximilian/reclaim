@@ -6,6 +6,7 @@ import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 
 public class PonderIndex {
+
     private static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(PvPEnhancements.MOD_ID);
 
     public static void register() {

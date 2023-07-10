@@ -6,6 +6,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public class HandleChunkLoading {
+
     public static void handleChunkUnloading(LevelAccessor level, ChunkAccess chunk) {
         ResourceLocation resourceLocation = level.dimensionType()
             .effectsLocation();

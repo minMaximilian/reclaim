@@ -4,26 +4,20 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockTracker {
-    private BlockState blockState;
-    private CompoundTag compoundTag;
-    private BlockPos blockPos;
-    private int ticksLeft;
+
+    private final BlockState blockState;
+    private final CompoundTag compoundTag;
+    private final BlockPos blockPos;
 
     public BlockTracker(BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos) {
-        this(blockState, compoundTag, blockPos, PvPEnhancementsConfig.COMMON.delayInTicksBeforeHealingDamage.get());
-    }
-
-    public BlockTracker(BlockState blockState, @Nullable CompoundTag compoundTag, BlockPos blockPos, int ticksLeft) {
         this.blockState = blockState;
         this.compoundTag = compoundTag;
         this.blockPos = blockPos.immutable();
-        this.ticksLeft = ticksLeft;
     }
 
     public BlockState getBlockState() {
@@ -34,22 +28,18 @@ public class BlockTracker {
         return blockPos;
     }
 
-    public int getTicksLeft() {
-        return ticksLeft;
-    }
-
-    public void setTicksLeft(int ticksLeft) {
-        this.ticksLeft = ticksLeft;
-    }
-
     public CompoundTag getCompoundTag() {
         return compoundTag;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BlockTracker that = (BlockTracker) o;
         return blockPos.equals(that.blockPos);
     }

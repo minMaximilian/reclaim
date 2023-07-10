@@ -12,13 +12,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 
 public class ChunkData {
-    private static Map<ResourceLocation, Map<ChunkPos, ChunkTracker>> chunkData = new ConcurrentHashMap<>();
+
+    private static final Map<ResourceLocation, Map<ChunkPos, ChunkTracker>> chunkData = new ConcurrentHashMap<>();
 
     public static Map<ResourceLocation, Map<ChunkPos, ChunkTracker>> getChunkTrackers() {
         return chunkData;
     }
 
-    public static void upsertExplosion(ResourceLocation resourceLocation, Map<ChunkPos, List<BlockTracker>> needHealing) {
+    public static void upsertExplosion(ResourceLocation resourceLocation,
+        Map<ChunkPos, List<BlockTracker>> needHealing) {
         upsertResourceLocation(resourceLocation);
         for (Map.Entry<ChunkPos, List<BlockTracker>> entry : needHealing.entrySet()) {
             upsertChunk(resourceLocation, entry.getKey(), entry.getValue());
@@ -26,14 +28,17 @@ public class ChunkData {
     }
 
     public static void upsertResourceLocation(ResourceLocation resourceLocation) {
-        if (containsResourceLocation(resourceLocation)) return;
+        if (containsResourceLocation(resourceLocation)) {
+            return;
+        }
         chunkData.put(resourceLocation, new ConcurrentHashMap<>());
     }
 
-    public static void upsertPenetration(ResourceLocation resourceLocation, ChunkPos chunkPos, BlockTracker blockTracker) {
+    public static void upsertSingle(ResourceLocation resourceLocation, ChunkPos chunkPos, BlockTracker blockTracker) {
         upsertResourceLocation(resourceLocation);
 
-        Map<ChunkPos, ChunkTracker> resourceChunks = chunkData.computeIfAbsent(resourceLocation, k -> new ConcurrentHashMap<>());
+        Map<ChunkPos, ChunkTracker> resourceChunks = chunkData.computeIfAbsent(resourceLocation,
+            k -> new ConcurrentHashMap<>());
         ChunkTracker chunkTracker = resourceChunks.computeIfAbsent(chunkPos, k -> new ChunkTracker());
 
         chunkTracker.put(blockTracker);
@@ -42,10 +47,12 @@ public class ChunkData {
         SAVED_CHUNKS.markDataDirty();
     }
 
-    public static void upsertChunk(ResourceLocation resourceLocation, ChunkPos chunkPos, List<BlockTracker> blockTrackerList) {
+    public static void upsertChunk(ResourceLocation resourceLocation, ChunkPos chunkPos,
+        List<BlockTracker> blockTrackerList) {
         upsertResourceLocation(resourceLocation);
 
-        Map<ChunkPos, ChunkTracker> resourceChunks = chunkData.computeIfAbsent(resourceLocation, k -> new ConcurrentHashMap<>());
+        Map<ChunkPos, ChunkTracker> resourceChunks = chunkData.computeIfAbsent(resourceLocation,
+            k -> new ConcurrentHashMap<>());
         ChunkTracker chunkTracker = resourceChunks.getOrDefault(chunkPos, new ChunkTracker());
         chunkTracker.putAll(blockTrackerList);
         resourceChunks.put(chunkPos, chunkTracker);
@@ -74,8 +81,9 @@ public class ChunkData {
     }
 
     public static ChunkTracker getChunkTracker(ResourceLocation resourceLocation, ChunkPos chunkPos) {
-        if (getResourceLocation(resourceLocation) != null)
+        if (getResourceLocation(resourceLocation) != null) {
             return getResourceLocation(resourceLocation).get(chunkPos);
+        }
         return null;
     }
 }

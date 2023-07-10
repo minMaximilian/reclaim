@@ -1,8 +1,7 @@
 package minmaximilian.pvp_enhancements.regen;
 
-import static minmaximilian.pvp_enhancements.regen.util.LegalPlacements.filterBlocks;
-
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
+import minmaximilian.pvp_enhancements.regen.util.LegalPlacements;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
 
 public class HealChunk {
+
     public static void healBlockTrackerWithoutPop(Level level, BlockTracker blockTracker) {
         HealBlockTrackerCommonLogic(level, blockTracker, blockTracker.getBlockPos());
     }
@@ -26,10 +26,12 @@ public class HealChunk {
         BlockPos blockPos = blockTracker.getBlockPos();
         FluidState fluidState = level.getFluidState(blockPos);
 
-        if (filterBlocks(level.getBlockState(blockPos)) && (fluidState.isEmpty() || fluidState.isSource())) {
-            level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), new ItemStack(level.getBlockState(blockPos)
-                .getBlock()
-                .asItem())));
+        if (LegalPlacements.filterBlock(level.getBlockState(blockPos)) && (fluidState.isEmpty()
+            || fluidState.isSource())) {
+            level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(),
+                new ItemStack(level.getBlockState(blockPos)
+                    .getBlock()
+                    .asItem())));
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity != null) {
                 CompoundTag compoundTag = blockEntity.saveWithFullMetadata();
@@ -43,14 +45,18 @@ public class HealChunk {
     private static void HealBlockTrackerCommonLogic(Level level, BlockTracker blockTracker, BlockPos blockPos) {
         if (blockTracker.getBlockState()
             .getBlock()
-            .equals(Blocks.NETHER_PORTAL))
+            .equals(Blocks.NETHER_PORTAL)) {
             level.setBlock(blockPos, Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
-        else level.setBlock(blockPos, blockTracker.getBlockState(), Block.UPDATE_ALL);
+        } else {
+            level.setBlock(blockPos, blockTracker.getBlockState(), Block.UPDATE_ALL);
+        }
 
         if (blockTracker.getCompoundTag() != null && blockTracker.getCompoundTag()
             .getAllKeys()
-            .size() != 0)
-            level.setBlockEntity(BlockEntity.loadStatic(blockPos, blockTracker.getBlockState(), blockTracker.getCompoundTag()));
+            .size() != 0) {
+            level.setBlockEntity(
+                BlockEntity.loadStatic(blockPos, blockTracker.getBlockState(), blockTracker.getCompoundTag()));
+        }
         level.playSound(null, blockPos
             .getX(), blockPos
             .getY(), blockPos
@@ -59,9 +65,10 @@ public class HealChunk {
 
     public static void popBlockTracker(Level level, BlockTracker blockTracker) {
         BlockPos blockPos = blockTracker.getBlockPos();
-        level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), new ItemStack(blockTracker.getBlockState()
-            .getBlock()
-            .asItem())));
+        level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(),
+            new ItemStack(blockTracker.getBlockState()
+                .getBlock()
+                .asItem())));
 
         if (blockTracker.getCompoundTag() != null && blockTracker.getCompoundTag()
             .contains("Items")) {
@@ -74,7 +81,8 @@ public class HealChunk {
             .getList("Items", Tag.TAG_COMPOUND);
         if (items != null) {
             for (int i = 0; i < items.size(); i++) {
-                level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ItemStack.of(items.getCompound(i))));
+                level.addFreshEntity(new ItemEntity(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(),
+                    ItemStack.of(items.getCompound(i))));
             }
         }
     }

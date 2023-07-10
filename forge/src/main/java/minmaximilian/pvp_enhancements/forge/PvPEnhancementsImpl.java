@@ -13,6 +13,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(PvPEnhancements.MOD_ID)
 public class PvPEnhancementsImpl {
+
     public PvPEnhancementsImpl() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get()
             .getModEventBus();
@@ -29,7 +30,8 @@ public class PvPEnhancementsImpl {
         PvPEnhancements.REGISTRATE.registerEventListeners(modEventBus);
         PvPEnhancements.init();
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PvPEnhancementsClientImpl.prepareClient(modEventBus, forgeEventBus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+            () -> () -> PvPEnhancementsClientImpl.prepareClient(modEventBus, forgeEventBus));
     }
 
     private void onLoadConfig(ModConfigEvent.Loading event) {

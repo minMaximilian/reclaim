@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 
 public class PvPEnhancementsBlocks {
+
     public static final BlockEntry<WallPlaster> WALL_PLASTER = PvPEnhancements.REGISTRATE
         .block("wall_plaster", WallPlaster::new)
         .properties(p -> p.sound(SoundType.GRAVEL))

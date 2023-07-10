@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
 public class IndexPlatformImpl {
+
     public static final ResourceLocation ERROR_ID = new ResourceLocation("if_you_see_this", "something_went_wrong");
 
     public static int getModGroupId() {

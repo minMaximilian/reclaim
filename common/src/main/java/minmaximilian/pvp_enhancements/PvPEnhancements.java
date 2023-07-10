@@ -11,6 +11,7 @@ import minmaximilian.pvp_enhancements.regen.SavedChunkDataManager;
 import net.minecraft.resources.ResourceLocation;
 
 public class PvPEnhancements {
+
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "maxs_pvp_enhancements";
 

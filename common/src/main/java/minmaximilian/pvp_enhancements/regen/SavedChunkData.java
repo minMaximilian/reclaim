@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class SavedChunkData extends SavedData {
+
     public static SavedChunkData load(MinecraftServer server) {
         return server.overworld()
             .getDataStorage()
@@ -39,8 +40,10 @@ public class SavedChunkData extends SavedData {
             for (int j = 0; j < chunks.size(); j++) {
                 CompoundTag chunk = chunks.getCompound(j);
                 CompoundTag chunkTrackerTag = chunk.getCompound("chunkData");
-                ChunkData.upsertChunk(resourceName, new ChunkPos(chunk.getLong("chunkPos")), nbtToBlockTrackerList(chunkTrackerTag.getList("blockTrackers", Tag.TAG_COMPOUND)));
-                ChunkData.getChunkTrackers().get(resourceName).get(new ChunkPos(chunk.getLong("chunkPos"))).setTicksLeft(chunkTrackerTag.getInt("time"));
+                ChunkData.upsertChunk(resourceName, new ChunkPos(chunk.getLong("chunkPos")),
+                    nbtToBlockTrackerList(chunkTrackerTag.getList("blockTrackers", Tag.TAG_COMPOUND)));
+                ChunkData.getChunkTrackers().get(resourceName).get(new ChunkPos(chunk.getLong("chunkPos")))
+                    .setTicksLeft(chunkTrackerTag.getInt("time"));
             }
         }
 
@@ -59,9 +62,7 @@ public class SavedChunkData extends SavedData {
         BlockState blockState = NbtUtils.readBlockState(blockTrackerTag.getCompound("blockState"));
         CompoundTag blockNbt = blockTrackerTag.getCompound("blockNbt");
         BlockPos blockPos = NbtUtils.readBlockPos(blockTrackerTag.getCompound("blockPos"));
-        int ticksLeft = blockTrackerTag.getInt("ticksLeft");
-
-        return new BlockTracker(blockState, blockNbt, blockPos, ticksLeft);
+        return new BlockTracker(blockState, blockNbt, blockPos);
     }
 
     private static CompoundTag chunkTrackerToNbt(ChunkTracker chunkTracker) {
@@ -81,7 +82,6 @@ public class SavedChunkData extends SavedData {
                 compoundTag.put("blockNbt", blockTrackerCompoundTag);
             }
             compoundTag.put("blockPos", NbtUtils.writeBlockPos(blockTracker.getBlockPos()));
-            compoundTag.putInt("ticksLeft", blockTracker.getTicksLeft());
             list.add(compoundTag);
         }
         return list;

@@ -9,8 +9,9 @@ import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.core.BlockPos;
 
 public class ChunkTracker {
+
+    private final TreeMap<BlockPos, BlockTracker> blockTrackers = new TreeMap<>();
     private int ticksLeft = PvPEnhancementsConfig.COMMON.delayInTicksBeforeHealingDamage.get();
-    private TreeMap<BlockPos, BlockTracker> blockTrackers = new TreeMap<>();
 
     public ChunkTracker() {
     }

@@ -13,6 +13,7 @@ import net.minecraft.world.item.context.UseOnContext;
 
 @Mixin(BlockItem.class)
 public class BlockPlaceMixin {
+
     @ModifyExpressionValue(
         method = "useOn",
         at = @At(
@@ -21,8 +22,9 @@ public class BlockPlaceMixin {
         )
     )
     private InteractionResult maxs_pvp_enhancements$afterPlace(InteractionResult placeResult, UseOnContext context) {
-        if (placeResult.consumesAction())
+        if (placeResult.consumesAction()) {
             BlockPlaceEvents.PLACE.invoker().onPlace(new BlockPlaceContext(context));
+        }
         return placeResult;
     }
 }

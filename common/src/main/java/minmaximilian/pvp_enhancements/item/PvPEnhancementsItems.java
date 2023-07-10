@@ -8,6 +8,7 @@ import minmaximilian.pvp_enhancements.base.PvPEnhancementsCreativeModeTab;
 import net.minecraft.world.item.Rarity;
 
 public class PvPEnhancementsItems {
+
     public static final ItemEntry<HephaestusBag> HEPHAESTUS_BAG = REGISTRATE.item("hephaestus_bag", HephaestusBag::new)
         .properties(p -> {
             p.stacksTo(1);

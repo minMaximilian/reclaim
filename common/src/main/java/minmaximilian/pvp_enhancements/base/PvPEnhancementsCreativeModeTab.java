@@ -11,7 +11,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class PvPEnhancementsCreativeModeTab {
-    public static final CreativeModeTab GROUP = new CreativeModeTab(IndexPlatform.getModGroupId(), PvPEnhancements.MOD_ID) {
+
+    public static final CreativeModeTab GROUP = new CreativeModeTab(IndexPlatform.getModGroupId(),
+        PvPEnhancements.MOD_ID) {
         @Override
         public ItemStack makeIcon() {
             return PvPEnhancementsItems.HEPHAESTUS_BAG.asStack();

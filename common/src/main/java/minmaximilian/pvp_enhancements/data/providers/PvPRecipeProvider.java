@@ -14,7 +14,11 @@ import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -25,6 +29,7 @@ import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
 
 public abstract class PvPRecipeProvider extends RecipeProvider {
+
     protected final List<GeneratedRecipe> all = new ArrayList<>();
 
     public PvPRecipeProvider(DataGenerator generator) {
@@ -50,6 +55,7 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
 
     @FunctionalInterface
     public interface GeneratedRecipe {
+
         void register(Consumer<FinishedRecipe> consumer);
     }
 
@@ -106,8 +112,9 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
         GeneratedRecipe viaShaped(UnaryOperator<ShapedRecipeBuilder> builder) {
             return register(consumer -> {
                 ShapedRecipeBuilder b = builder.apply(ShapedRecipeBuilder.shaped(result.get(), amount));
-                if (unlockedBy != null)
+                if (unlockedBy != null) {
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                }
                 b.save(consumer, createLocation("crafting"));
             });
         }
@@ -115,8 +122,9 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
         GeneratedRecipe viaShapeless(UnaryOperator<ShapelessRecipeBuilder> builder) {
             return register(consumer -> {
                 ShapelessRecipeBuilder b = builder.apply(ShapelessRecipeBuilder.shapeless(result.get(), amount));
-                if (unlockedBy != null)
+                if (unlockedBy != null) {
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                }
                 b.save(consumer, createLocation("crafting"));
             });
         }
@@ -199,15 +207,16 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
             }
 
             private GeneratedRecipe create(SimpleCookingSerializer<?> serializer,
-                                           UnaryOperator<SimpleCookingRecipeBuilder> builder, float cookingTimeModifier) {
+                UnaryOperator<SimpleCookingRecipeBuilder> builder, float cookingTimeModifier) {
                 return register(consumer -> {
                     boolean isOtherMod = compatDatagenOutput != null;
 
                     SimpleCookingRecipeBuilder b = builder.apply(
                         SimpleCookingRecipeBuilder.cooking(ingredient.get(), isOtherMod ? Items.DIRT : result.get(),
                             exp, (int) (cookingTime * cookingTimeModifier), serializer));
-                    if (unlockedBy != null)
+                    if (unlockedBy != null) {
                         b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                    }
                     b.save(result -> {
                         consumer.accept(result);
                     }, createSimpleLocation(RegisteredObjects.getKeyOrThrow(serializer)

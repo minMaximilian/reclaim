@@ -13,22 +13,30 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
 public class HandleLevelTick {
+
     public static void handleLevelTick(Level level) {
         if (!ActiveChunks.containsResourceLocation(level.dimension()
-            .location())) return;
+            .location())) {
+            return;
+        }
         Map<ChunkPos, ChunkTracker> dimensionChunks = ChunkData.getResourceLocation(level.dimension()
             .location());
         for (Map.Entry<ChunkPos, ChunkTracker> entry : dimensionChunks.entrySet()) {
             if (ActiveChunks.containsChunk(level.dimension()
-                .location(), entry.getKey()) && handleChunk(level, entry.getValue()))
+                .location(), entry.getKey()) && handleChunk(level, entry.getValue())) {
                 ChunkData.removeChunk(level.dimension()
                     .location(), entry.getKey());
+            }
         }
     }
 
     private static boolean handleChunk(Level level, ChunkTracker chunkTracker) {
-        if (!chunkTracker.needsHealing()) return true;
-        if (!chunkTracker.healChunk()) return false;
+        if (!chunkTracker.needsHealing()) {
+            return true;
+        }
+        if (!chunkTracker.healChunk()) {
+            return false;
+        }
         BlockTracker blockTracker = chunkTracker.pop();
         HealChunk.healBlockTracker(level, blockTracker);
 

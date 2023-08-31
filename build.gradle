@@ -74,7 +74,7 @@ subprojects {
             }
             maven {
                 name = "realRobotixMaven"
-                url = "https://maven.realrobotix.me/artifactory/maxs-pvp-enhancements"
+                url = "https://maven.realrobotix.me/maxs-pvp-enhancements"
                 credentials(PasswordCredentials)
             }
         }

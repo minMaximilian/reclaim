@@ -1,5 +1,7 @@
 package minmaximilian.pvp_enhancements.forge;
 
+import static minmaximilian.pvp_enhancements.PvPEnhancements.REGISTRATE;
+
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,8 +16,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(PvPEnhancements.MOD_ID)
 public class PvPEnhancementsImpl {
 
+    static IEventBus modEventBus;
+
     public PvPEnhancementsImpl() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get()
+        modEventBus = FMLJavaModLoadingContext.get()
             .getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         ModLoadingContext mlContext = ModLoadingContext.get();
@@ -27,11 +31,14 @@ public class PvPEnhancementsImpl {
 
         PvPEnhancementsCommonEventsImpl.register(forgeEventBus);
 
-        PvPEnhancements.REGISTRATE.registerEventListeners(modEventBus);
         PvPEnhancements.init();
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
             () -> () -> PvPEnhancementsClientImpl.prepareClient(modEventBus, forgeEventBus));
+    }
+
+    public static void finalizeRegistrate() {
+        REGISTRATE.registerEventListeners(modEventBus);
     }
 
     private void onLoadConfig(ModConfigEvent.Loading event) {

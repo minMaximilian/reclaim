@@ -1,6 +1,7 @@
 package minmaximilian.pvp_enhancements.regen.util;
 
-import net.minecraft.core.Registry;
+import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
+
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -11,12 +12,12 @@ public class LegalPlacements {
     }
 
     private static boolean filterBlocksInner(BlockState blockState) {
-        switch (Registry.BLOCK.getKey(blockState.getBlock())
+        return switch (BLOCK.getKey(blockState.getBlock())
             .toString()) {
-            case "minecraft:air", "minecraft:void_air", "minecraft:cave_air", "minecraft:fire", "minecraft:water", "minecraft:lava":
-                return false;
-        }
-        return true;
+            case "minecraft:air", "minecraft:void_air", "minecraft:cave_air", "minecraft:fire", "minecraft:water", "minecraft:lava" ->
+                false;
+            default -> true;
+        };
     }
 
     public static boolean filterBlock(BlockState blockState, Explosion explosion) {

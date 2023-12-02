@@ -9,8 +9,8 @@ import net.minecraft.data.DataGenerator;
 
 public class DataGeneratorRoot {
 
-    public static void register(DataGenerator gen) {
-        gen.addProvider(true, BlockItemsRecipeProvider.create(gen));
+    public static void register(DataGenerator.PackGenerator gen) {
+        gen.addProvider(BlockItemsRecipeProvider::new);
         PonderIndex.register();
         PonderLocalization.provideRegistrateLang(PvPEnhancements.REGISTRATE);
     }

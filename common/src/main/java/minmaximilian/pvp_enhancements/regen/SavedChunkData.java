@@ -8,6 +8,7 @@ import java.util.Map;
 
 import minmaximilian.pvp_enhancements.regen.util.BlockTracker;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -59,7 +60,8 @@ public class SavedChunkData extends SavedData {
     }
 
     private static BlockTracker nbtToBlockTracker(CompoundTag blockTrackerTag) {
-        BlockState blockState = NbtUtils.readBlockState(blockTrackerTag.getCompound("blockState"));
+        BlockState blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(),
+            blockTrackerTag.getCompound("blockState"));
         CompoundTag blockNbt = blockTrackerTag.getCompound("blockNbt");
         BlockPos blockPos = NbtUtils.readBlockPos(blockTrackerTag.getCompound("blockPos"));
         return new BlockTracker(blockState, blockNbt, blockPos);

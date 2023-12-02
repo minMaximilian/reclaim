@@ -1,14 +1,14 @@
 package minmaximilian.pvp_enhancements.regen.handlers;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import minmaximilian.pvp_enhancements.block.WallPlaster;
 import minmaximilian.pvp_enhancements.regen.ChunkData;
 import minmaximilian.pvp_enhancements.regen.ChunkTracker;
 import minmaximilian.pvp_enhancements.regen.HealChunk;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -26,8 +26,7 @@ public class HandleBlockPlacement {
             Block block = placedBlock.getBlock();
             ChunkTracker chunkTracker = ChunkData.getChunkTracker(levelAccessor.dimensionType().effectsLocation(),
                 new ChunkPos((blockPos)));
-            ServerLevel level = levelAccessor.getServer().getLevel(
-                ResourceKey.create(Registry.DIMENSION_REGISTRY, levelAccessor.dimensionType().effectsLocation()));
+            ServerLevel level = Objects.requireNonNull(levelAccessor.getServer().overworld());
             if (chunkTracker != null && chunkTracker.get(blockPos) != null && block instanceof WallPlaster) {
                 HealChunk.healBlockTrackerWithoutPop(level, chunkTracker.remove(blockPos));
             } else if (chunkTracker != null && chunkTracker.get(blockPos) != null) {

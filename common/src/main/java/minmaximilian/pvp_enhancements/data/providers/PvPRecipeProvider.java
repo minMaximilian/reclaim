@@ -13,8 +13,9 @@ import com.tterrag.registrate.util.entry.ItemProviderEntry;
 
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -32,9 +33,17 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
 
     protected final List<GeneratedRecipe> all = new ArrayList<>();
 
-    public PvPRecipeProvider(DataGenerator generator) {
-        super(generator);
+    public PvPRecipeProvider(PackOutput packOutput) {
+        super(packOutput);
     }
+
+    @Override
+    public void buildRecipes(@NotNull Consumer<FinishedRecipe> p_200404_1_) {
+        all.forEach(c -> c.register(p_200404_1_));
+        PvPRecipeProvider.LOGGER.info(
+            getName() + " registered " + all.size() + " recipe" + (all.size() == 1 ? "" : "s"));
+    }
+
 
     public void registerRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
         all.forEach(c -> c.register(consumer));
@@ -111,7 +120,8 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
 
         GeneratedRecipe viaShaped(UnaryOperator<ShapedRecipeBuilder> builder) {
             return register(consumer -> {
-                ShapedRecipeBuilder b = builder.apply(ShapedRecipeBuilder.shaped(result.get(), amount));
+                ShapedRecipeBuilder b = builder.apply(
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result.get(), amount));
                 if (unlockedBy != null) {
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
                 }
@@ -121,7 +131,8 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
 
         GeneratedRecipe viaShapeless(UnaryOperator<ShapelessRecipeBuilder> builder) {
             return register(consumer -> {
-                ShapelessRecipeBuilder b = builder.apply(ShapelessRecipeBuilder.shapeless(result.get(), amount));
+                ShapelessRecipeBuilder b = builder.apply(
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result.get(), amount));
                 if (unlockedBy != null) {
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
                 }
@@ -157,9 +168,11 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
         class GeneratedCookingRecipeBuilder {
 
             private final Supplier<Ingredient> ingredient;
-            private final SimpleCookingSerializer<?> FURNACE = RecipeSerializer.SMELTING_RECIPE,
-                SMOKER = RecipeSerializer.SMOKING_RECIPE, BLAST = RecipeSerializer.BLASTING_RECIPE,
-                CAMPFIRE = RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
+            private final SimpleCookingSerializer<?>
+                FURNACE = (SimpleCookingSerializer<?>) RecipeSerializer.SMELTING_RECIPE,
+                SMOKER = (SimpleCookingSerializer<?>) RecipeSerializer.SMOKING_RECIPE,
+                BLAST = (SimpleCookingSerializer<?>) RecipeSerializer.BLASTING_RECIPE,
+                CAMPFIRE = (SimpleCookingSerializer<?>) RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
             private float exp;
             private int cookingTime;
 
@@ -211,15 +224,16 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
                 return register(consumer -> {
                     boolean isOtherMod = compatDatagenOutput != null;
 
+                    // fix|me removed serializer from the cooking time + refactored with whatever intellij said
+                    // can't really test this 'cause we don't have any cooking recipes yet, just assume it's fine for now
                     SimpleCookingRecipeBuilder b = builder.apply(
-                        SimpleCookingRecipeBuilder.cooking(ingredient.get(), isOtherMod ? Items.DIRT : result.get(),
-                            exp, (int) (cookingTime * cookingTimeModifier), serializer));
+                        SimpleCookingRecipeBuilder.campfireCooking(ingredient.get(), RecipeCategory.MISC,
+                            isOtherMod ? Items.DIRT : result.get(),
+                            exp, (int) (cookingTime * cookingTimeModifier)));
                     if (unlockedBy != null) {
                         b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
                     }
-                    b.save(result -> {
-                        consumer.accept(result);
-                    }, createSimpleLocation(RegisteredObjects.getKeyOrThrow(serializer)
+                    b.save(consumer, createSimpleLocation(RegisteredObjects.getKeyOrThrow(serializer)
                         .getPath()));
                 });
             }

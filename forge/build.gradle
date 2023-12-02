@@ -49,13 +49,13 @@ dependencies {
     // Compatibilities
     modCompileOnly("com.rbasamoyai:createbigcannons-forge-${minecraft_version}:${cbc_version}") { transitive = false }
     modCompileOnly("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
-    modCompileOnly("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
+    modCompileOnly("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_forge_version}")
 
     // Test Compatibilities
-    modLocalRuntime("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
-    // Ensure flywheel is included in runtime when running with create
-    modLocalRuntime("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
-    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-${minecraft_version}:${cbc_version}") { transitive = false }
+//    modLocalRuntime("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
+//    // Ensure flywheel is included in runtime when running with create
+//    modLocalRuntime("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
+//    modLocalRuntime("com.rbasamoyai:createbigcannons-forge-${minecraft_version}:${cbc_version}") { transitive = false }
 
     // Development QOL
     modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }

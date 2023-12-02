@@ -1,23 +1,29 @@
 package minmaximilian.pvp_enhancements.fabric;
 
 
+import static minmaximilian.pvp_enhancements.PvPEnhancements.REGISTRATE;
+
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.config.PvPEnhancementsConfig;
 import net.fabricmc.api.ModInitializer;
-import net.minecraftforge.api.ModLoadingContext;
-import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 
 public class PvPEnhancementsImpl implements ModInitializer {
+
+    public static void finalizeRegistrate() {
+        REGISTRATE.register();
+    }
 
     @Override
     public void onInitialize() {
         PvPEnhancements.init();
-        PvPEnhancements.REGISTRATE.register();
 
-        PvPEnhancementsConfig.registerConfigs((t, c) -> ModLoadingContext.registerConfig(PvPEnhancements.MOD_ID, t, c));
+        PvPEnhancementsConfig.registerConfigs(
+            (t, c) -> ForgeConfigRegistry.INSTANCE.register(PvPEnhancements.MOD_ID, t, c));
 
-        ModConfigEvent.LOADING.register(PvPEnhancementsConfig::onLoad);
-        ModConfigEvent.RELOADING.register(PvPEnhancementsConfig::onReload);
+        ModConfigEvents.loading(PvPEnhancements.MOD_ID).register(PvPEnhancementsConfig::onLoad);
+        ModConfigEvents.reloading(PvPEnhancements.MOD_ID).register(PvPEnhancementsConfig::onReload);
 
         PvPEnhancementsCommonEventsImpl.register();
     }

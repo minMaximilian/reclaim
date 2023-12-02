@@ -3,10 +3,8 @@ package minmaximilian.pvp_enhancements;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import minmaximilian.pvp_enhancements.base.PvPEnhancementsCreativeModeTab;
-import minmaximilian.pvp_enhancements.block.PvPEnhancementsBlocks;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import minmaximilian.pvp_enhancements.data.PvPRegistrate;
-import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 import minmaximilian.pvp_enhancements.regen.SavedChunkDataManager;
 import net.minecraft.resources.ResourceLocation;
 
@@ -20,10 +18,13 @@ public class PvPEnhancements {
     public static final SavedChunkDataManager SAVED_CHUNKS = new SavedChunkDataManager();
 
     public static void init() {
-        PvPEnhancementsCreativeModeTab.register();
+        IndexPlatform.register();
+        finalizeRegistrate();
+    }
 
-        PvPEnhancementsItems.register();
-        PvPEnhancementsBlocks.register();
+    @ExpectPlatform
+    public static void finalizeRegistrate() {
+        throw new AssertionError();
     }
 
     public static ResourceLocation asResource(String name) {

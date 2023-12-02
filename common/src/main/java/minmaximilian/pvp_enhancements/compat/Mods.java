@@ -1,11 +1,12 @@
 package minmaximilian.pvp_enhancements.compat;
 
+import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
+
 import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import minmaximilian.pvp_enhancements.IndexPlatform;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
@@ -35,6 +36,6 @@ public enum Mods {
     }
 
     public Block getBlock(String id) {
-        return Registry.BLOCK.get(new ResourceLocation(asId(), id));
+        return BLOCK.get(new ResourceLocation(asId(), id));
     }
 }

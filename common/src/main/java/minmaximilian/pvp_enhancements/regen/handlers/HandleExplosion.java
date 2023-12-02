@@ -26,7 +26,7 @@ public class HandleExplosion {
     private static final boolean healCreeperExplosions = PvPEnhancementsConfig.COMMON.healCreeperExplosions.get();
 
     public static void handleExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
-        if (!healCreeperExplosions && explosion.getSourceMob() != null && explosion.getSourceMob()
+        if (!healCreeperExplosions && explosion.getDirectSourceEntity() != null && explosion.getDirectSourceEntity()
             .getType() == EntityType.CREEPER) {
             return;
         }

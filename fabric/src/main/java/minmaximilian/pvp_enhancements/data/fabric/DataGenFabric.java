@@ -4,11 +4,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.data.DataGeneratorRoot;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class DataGenFabric implements DataGeneratorEntrypoint {
 
@@ -18,7 +18,10 @@ public class DataGenFabric implements DataGeneratorEntrypoint {
         ExistingFileHelper helper = new ExistingFileHelper(
             Set.of(resources), Set.of("maxs_pvp_enhancements"), true, null, null
         );
-        DataGeneratorRoot.register(fabricDataGenerator);
-        PvPEnhancements.REGISTRATE.setupDatagen(fabricDataGenerator, helper);
+
+        FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+
+        DataGeneratorRoot.register(pack);
+        PvPEnhancements.REGISTRATE.setupDatagen(pack, helper);
     }
 }

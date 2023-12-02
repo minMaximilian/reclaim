@@ -6,6 +6,7 @@ import net.minecraftforge.fml.ModList;
 
 public class IndexPlatformImpl {
 
+
     public static int getModGroupId() {
         return -1;
     }
@@ -14,12 +15,13 @@ public class IndexPlatformImpl {
         return ModList.get().isLoaded(id);
     }
 
-    public static PvPRegistrate createRegistrate(String modid) {
-        return new PvPRegistrate(modid) {
+    public static PvPRegistrate createRegistrate(String modId) {
+        return new PvPRegistrate(modId) {
             @Override
             public PvPRegistrate registerEventListeners(Object bus) {
                 return super.registerEventListeners((IEventBus) bus);
             }
         };
     }
+
 }

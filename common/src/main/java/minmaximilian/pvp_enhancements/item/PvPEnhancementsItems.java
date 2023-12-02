@@ -4,7 +4,6 @@ import static minmaximilian.pvp_enhancements.PvPEnhancements.REGISTRATE;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import minmaximilian.pvp_enhancements.base.PvPEnhancementsCreativeModeTab;
 import net.minecraft.world.item.Rarity;
 
 public class PvPEnhancementsItems {
@@ -18,10 +17,7 @@ public class PvPEnhancementsItems {
         .lang("Hephaestus's Bag")
         .register();
 
-    static {
-        REGISTRATE.creativeModeTab(() -> PvPEnhancementsCreativeModeTab.GROUP);
-    }
-
+    @SuppressWarnings("EmptyMethod")
     public static void register() {
     }
 }

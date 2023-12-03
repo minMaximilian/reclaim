@@ -61,6 +61,9 @@ dependencies {
     modImplementation(include("com.electronwill.night-config:core:$night_config_version"))
     modImplementation(include("com.electronwill.night-config:toml:$night_config_version"))
 
+    // DataGen
+    modLocalRuntime(include("io.github.fabricators_of_create.Porting-Lib:data:${project.porting_lib_version}")) { exclude(group: "io.vram") }
+
     // Compatibilities
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}") { transitive = false }
     modCompileOnly("com.rbasamoyai:createbigcannons-fabric-${minecraft_version}:${cbc_version}") { transitive = false }

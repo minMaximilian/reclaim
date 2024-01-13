@@ -18,14 +18,10 @@ public class BlockItemsRecipeProviderImpl extends BlockItemsRecipeProvider {
     public static RecipeProvider create(PackOutput packOutput) {
         BlockItemsRecipeProviderImpl provider = new BlockItemsRecipeProviderImpl(packOutput);
         return new FabricRecipeProvider((FabricDataOutput) packOutput) {
+            @Override
             public void buildRecipes(Consumer<FinishedRecipe> exporter) {
                 provider.registerRecipes(exporter);
             }
         };
-    }
-
-    @Override
-    public void buildRecipes(Consumer<FinishedRecipe> writer) {
-
     }
 }

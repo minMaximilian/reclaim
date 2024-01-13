@@ -16,7 +16,7 @@ public class DataGenFabric implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         Path resources = Paths.get(System.getProperty(ExistingFileHelper.EXISTING_RESOURCES));
         ExistingFileHelper helper = new ExistingFileHelper(
-            Set.of(resources), Set.of("maxs_pvp_enhancements"), true, null, null
+            Set.of(resources), Set.of("maxs_pvp_enhancements"), false, null, null
         );
 
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();

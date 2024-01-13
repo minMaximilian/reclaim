@@ -65,13 +65,10 @@ public class PvPEnhancementsCreativeModeTab {
             this.tab = tab;
         }
 
-
         private static List<ItemOrdering> makeOrderings() {
             List<ItemOrdering> orderings = new ReferenceArrayList<>();
 
             Map<ItemProviderEntry<?>, ItemProviderEntry<?>> simpleBeforeOrderings = Map.of(
-                //AllItems.EMPTY_BLAZE_BURNER, AllBlocks.BLAZE_BURNER,
-                //AllItems.SCHEDULE, AllBlocks.TRACK_STATION
             );
 
             simpleBeforeOrderings.forEach((entry, otherEntry) -> {
@@ -85,16 +82,6 @@ public class PvPEnhancementsCreativeModeTab {
             Map<Item, Function<Item, ItemStack>> factories = new Reference2ReferenceOpenHashMap<>();
 
             Map<ItemProviderEntry<?>, Function<Item, ItemStack>> simpleFactories = Map.of(
-                /*AllItems.COPPER_BACKTANK, item -> {
-                    ItemStack stack = new ItemStack(item);
-                    stack.getOrCreateTag().putInt("Air", BacktankUtil.maxAirWithoutEnchants());
-                    return stack;
-                },
-                AllItems.NETHERITE_BACKTANK, item -> {
-                    ItemStack stack = new ItemStack(item);
-                    stack.getOrCreateTag().putInt("Air", BacktankUtil.maxAirWithoutEnchants());
-                    return stack;
-                }*/
             );
 
             simpleFactories.forEach((entry, factory) -> {
@@ -114,7 +101,6 @@ public class PvPEnhancementsCreativeModeTab {
             Map<Item, TabVisibility> visibilities = new Reference2ObjectOpenHashMap<>();
 
             Map<ItemProviderEntry<?>, TabVisibility> simpleVisibilities = Map.of(
-                //AllItems.BLAZE_CAKE_BASE, TabVisibility.SEARCH_TAB_ONLY
             );
 
             simpleVisibilities.forEach((entry, factory) -> {

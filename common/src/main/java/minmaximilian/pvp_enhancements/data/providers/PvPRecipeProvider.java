@@ -44,7 +44,6 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
             getName() + " registered " + all.size() + " recipe" + (all.size() == 1 ? "" : "s"));
     }
 
-
     public void registerRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
         all.forEach(c -> c.register(consumer));
     }
@@ -52,14 +51,6 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
     protected GeneratedRecipe register(GeneratedRecipe recipe) {
         all.add(recipe);
         return recipe;
-    }
-
-    GeneratedRecipeBuilder create(Supplier<ItemLike> result) {
-        return new GeneratedRecipeBuilder("/", result);
-    }
-
-    GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike> result) {
-        return create(result::get);
     }
 
     @FunctionalInterface

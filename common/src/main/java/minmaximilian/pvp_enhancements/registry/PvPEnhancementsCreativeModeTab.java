@@ -3,6 +3,7 @@ package minmaximilian.pvp_enhancements.registry;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -15,6 +16,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.multiloader.Env;
 import net.minecraft.client.Minecraft;
@@ -149,8 +151,23 @@ public class PvPEnhancementsCreativeModeTab {
             }
         }
 
+        private static Predicate<Item> makeExclusionPredicate() {
+            Set<Item> exclusions = new ReferenceOpenHashSet<>();
+
+            List<ItemProviderEntry<?>> simpleExclusions = List.of(
+                //AllBlocks.REFINED_RADIANCE_CASING // just as an example
+            );
+
+            for (ItemProviderEntry<?> entry : simpleExclusions) {
+                exclusions.add(entry.asItem());
+            }
+
+            return (item) -> exclusions.contains(item);
+        }
+
         @Override
         public void accept(CreativeModeTab.ItemDisplayParameters pParameters, CreativeModeTab.Output output) {
+            Predicate<Item> exclusionPredicate = makeExclusionPredicate();
             List<ItemOrdering> orderings = makeOrderings();
             Function<Item, ItemStack> stackFunc = makeStackFunc();
             Function<Item, TabVisibility> visibilityFunc = makeVisibilityFunc();
@@ -162,6 +179,10 @@ public class PvPEnhancementsCreativeModeTab {
                     .getModel(new ItemStack(item), null, null, 0).isGui3d(),
                 () -> () -> item -> false // don't crash servers
             );
+
+            items.addAll(collectItems(tab, is3d, true, exclusionPredicate));
+            items.addAll(collectBlocks(tab, exclusionPredicate));
+            items.addAll(collectItems(tab, is3d, false, exclusionPredicate));
 
             applyOrderings(items, orderings);
             outputAll(output, items, stackFunc, visibilityFunc);

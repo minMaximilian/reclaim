@@ -21,7 +21,7 @@ public class DataGenFabric implements DataGeneratorEntrypoint {
 
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-        DataGeneratorRoot.register(pack);
         PvPEnhancements.REGISTRATE.setupDatagen(pack, helper);
+        DataGeneratorRoot.gatherData(pack);
     }
 }

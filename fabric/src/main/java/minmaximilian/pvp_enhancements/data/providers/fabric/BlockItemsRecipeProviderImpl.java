@@ -20,7 +20,7 @@ public class BlockItemsRecipeProviderImpl extends BlockItemsRecipeProvider {
         return new FabricRecipeProvider((FabricDataOutput) packOutput) {
             @Override
             public void buildRecipes(Consumer<FinishedRecipe> exporter) {
-                provider.registerRecipes(exporter);
+                provider.buildRecipes(exporter);
             }
         };
     }

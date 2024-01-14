@@ -24,7 +24,6 @@ public class IndexPlatform {
         REGISTRATE.useCreativeTab(PvPEnhancementsCreativeModeTab.getBaseTabKey());
     }
 
-
     public static void register() {
         useBaseTab();
         PvPEnhancementsBlocks.register();

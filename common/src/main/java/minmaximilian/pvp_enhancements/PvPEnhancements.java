@@ -12,9 +12,7 @@ public class PvPEnhancements {
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "maxs_pvp_enhancements";
-
     public static final PvPRegistrate REGISTRATE = IndexPlatform.createRegistrate(MOD_ID);
-
     public static final SavedChunkDataManager SAVED_CHUNKS = new SavedChunkDataManager();
 
     public static void init() {

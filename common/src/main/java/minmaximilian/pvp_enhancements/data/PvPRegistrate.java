@@ -18,9 +18,11 @@ public class PvPRegistrate extends AbstractRegistrate<PvPRegistrate> {
 
     private static Map<RegistryEntry<?>, ResourceKey<CreativeModeTab>> tabLookup = new IdentityHashMap<>();
     private ResourceKey<CreativeModeTab> currentTab;
+
     public PvPRegistrate(String modid) {
         super(modid);
     }
+
     public PvPRegistrate registerEventListeners(Object bus) {
         return null;
     }
@@ -39,8 +41,9 @@ public class PvPRegistrate extends AbstractRegistrate<PvPRegistrate> {
         Builder<R, T, ?, ?> builder, NonNullSupplier<? extends T> creator,
         NonNullFunction<RegistryObject<T>, ? extends RegistryEntry<T>> entryFactory) {
         RegistryEntry<T> entry = super.accept(name, type, builder, creator, entryFactory);
-        if (currentTab != null)
+        if (currentTab != null) {
             tabLookup.put(entry, currentTab);
+        }
         return entry;
     }
 }

@@ -33,6 +33,7 @@ public abstract class PvPRecipeProvider extends RecipeProvider {
 
     @FunctionalInterface
     public interface GeneratedRecipe {
+
         void register(Consumer<FinishedRecipe> consumer);
     }
 }

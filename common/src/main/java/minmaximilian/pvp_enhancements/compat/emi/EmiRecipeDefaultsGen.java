@@ -21,7 +21,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+
 public class EmiRecipeDefaultsGen implements DataProvider {
+
     public static final List<ResourceLocation> DEFAULT_RECIPES = new ArrayList<>();
     public static final Map<TagKey<Item>, ResourceLocation> TAG_DEFAULTS = new LinkedHashMap<>(); // preserve insertion order
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();

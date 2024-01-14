@@ -51,6 +51,10 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
             .requires(Blocks.CLAY)
         );
 
+    public BlockItemsRecipeProvider(PackOutput pOutput) {
+        super(pOutput);
+    }
+
     GeneratedRecipeBuilder create(Supplier<ItemLike> result) {
         return new GeneratedRecipeBuilder("/", result);
     }
@@ -61,10 +65,6 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
 
     GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike> result) {
         return create(result::get);
-    }
-
-    public BlockItemsRecipeProvider(PackOutput pOutput) {
-        super(pOutput);
     }
 
     class GeneratedRecipeBuilder {
@@ -92,6 +92,14 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
         public GeneratedRecipeBuilder(String path, ResourceLocation result) {
             this(path);
             this.compatDatagenOutput = result;
+        }
+
+        private static ResourceLocation clean(ResourceLocation loc) {
+            String path = loc.getPath();
+            while (path.contains("//")) {
+                path = path.replaceAll("//", "/");
+            }
+            return new ResourceLocation(loc.getNamespace(), path);
         }
 
         GeneratedRecipeBuilder returns(int amount) {
@@ -129,31 +137,29 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
 
         GeneratedRecipe viaShaped(UnaryOperator<ShapedRecipeBuilder> builder) {
             return register(consumer -> {
-                ShapedRecipeBuilder b = builder.apply(ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result.get(), amount));
-                if (unlockedBy != null)
+                ShapedRecipeBuilder b = builder.apply(
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result.get(), amount));
+                if (unlockedBy != null) {
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                }
                 b.save(consumer, createLocation("crafting"));
             });
         }
 
         GeneratedRecipe viaShapeless(UnaryOperator<ShapelessRecipeBuilder> builder) {
             return register(consumer -> {
-                ShapelessRecipeBuilder b = builder.apply(ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result.get(), amount));
-                if (unlockedBy != null)
+                ShapelessRecipeBuilder b = builder.apply(
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result.get(), amount));
+                if (unlockedBy != null) {
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                }
                 b.save(consumer, createLocation("crafting"));
             });
         }
 
-        private static ResourceLocation clean(ResourceLocation loc) {
-            String path = loc.getPath();
-            while (path.contains("//"))
-                path = path.replaceAll("//", "/");
-            return new ResourceLocation(loc.getNamespace(), path);
-        }
-
         private ResourceLocation createSimpleLocation(String recipeType) {
-            ResourceLocation loc = clean(PvPEnhancements.asResource(recipeType + "/" + getRegistryName().getPath() + suffix));
+            ResourceLocation loc = clean(
+                PvPEnhancements.asResource(recipeType + "/" + getRegistryName().getPath() + suffix));
             if (addToEmiDefaults) {
                 EmiRecipeDefaultsGen.DEFAULT_RECIPES.add(loc);
             }
@@ -161,7 +167,8 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
         }
 
         private ResourceLocation createLocation(String recipeType) {
-            ResourceLocation loc = clean(PvPEnhancements.asResource(recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix));
+            ResourceLocation loc = clean(
+                PvPEnhancements.asResource(recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix));
             if (addToEmiDefaults) {
                 EmiRecipeDefaultsGen.DEFAULT_RECIPES.add(loc);
             }
@@ -207,9 +214,12 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
 
             private GeneratedRecipe create(UnaryOperator<SingleItemRecipeBuilder> builder) {
                 return register(consumer -> {
-                    SingleItemRecipeBuilder b = builder.apply(SingleItemRecipeBuilder.stonecutting(ingredient.get(), RecipeCategory.MISC, result.get(), amount));
-                    if (unlockedBy != null)
+                    SingleItemRecipeBuilder b = builder.apply(
+                        SingleItemRecipeBuilder.stonecutting(ingredient.get(), RecipeCategory.MISC, result.get(),
+                            amount));
+                    if (unlockedBy != null) {
                         b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                    }
                     b.save(consumer, createLocation("stonecutting"));
                 });
             }
@@ -222,14 +232,13 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
         class GeneratedCookingRecipeBuilder {
 
             private final Supplier<Ingredient> ingredient;
-            private float exp;
-            private int cookingTime;
-
             private final SimpleCookingSerializer<?>
                 FURNACE = (SimpleCookingSerializer<?>) RecipeSerializer.SMELTING_RECIPE,
                 SMOKER = (SimpleCookingSerializer<?>) RecipeSerializer.SMOKING_RECIPE,
                 BLAST = (SimpleCookingSerializer<?>) RecipeSerializer.BLASTING_RECIPE,
                 CAMPFIRE = (SimpleCookingSerializer<?>) RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
+            private float exp;
+            private int cookingTime;
 
             GeneratedCookingRecipeBuilder(Supplier<Ingredient> ingredient) {
                 this.ingredient = ingredient;
@@ -280,10 +289,12 @@ public class BlockItemsRecipeProvider extends PvPRecipeProvider {
                     boolean isOtherMod = compatDatagenOutput != null;
 
                     SimpleCookingRecipeBuilder b = builder.apply(
-                        SimpleCookingRecipeBuilder.campfireCooking(ingredient.get(), RecipeCategory.MISC, isOtherMod ? Items.DIRT : result.get(),
+                        SimpleCookingRecipeBuilder.campfireCooking(ingredient.get(), RecipeCategory.MISC,
+                            isOtherMod ? Items.DIRT : result.get(),
                             exp, (int) (cookingTime * cookingTimeModifier)));
-                    if (unlockedBy != null)
+                    if (unlockedBy != null) {
                         b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
+                    }
                     b.save(consumer, createSimpleLocation(RegisteredObjects.getKeyOrThrow(serializer)
                         .getPath()));
                 });

@@ -10,6 +10,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 
 public class BlockItemsRecipeProviderImpl extends BlockItemsRecipeProvider {
+
     protected BlockItemsRecipeProviderImpl(PackOutput pPackoutput) {
         super(pPackoutput);
     }

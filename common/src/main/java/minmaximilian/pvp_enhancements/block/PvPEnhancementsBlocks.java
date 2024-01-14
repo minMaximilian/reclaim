@@ -21,11 +21,12 @@ public class PvPEnhancementsBlocks {
         .lang("Wall Plaster")
         .register();
 
-    @SuppressWarnings("EmptyMethod")
-    public static void register() {}
-
     static {
         IndexPlatform.useBaseTab();
+    }
+
+    @SuppressWarnings("EmptyMethod")
+    public static void register() {
     }
 
     private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> shovel() {

@@ -69,8 +69,8 @@ dependencies {
     modCompileOnly("com.rbasamoyai:createbigcannons-fabric-${minecraft_version}:${cbc_version}") { transitive = false }
 
     // Test Compatibilities
-//    modLocalRuntime("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
-//    modLocalRuntime("com.rbasamoyai:createbigcannons-fabric-${minecraft_version}:${cbc_version}")
+    modLocalRuntime("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+    modLocalRuntime("com.rbasamoyai:createbigcannons-fabric-${minecraft_version}:${cbc_version}")
 
     // Development QOL
     modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")

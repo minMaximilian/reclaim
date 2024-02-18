@@ -19,6 +19,7 @@ public class PvPEnhancementsBlocks {
         .properties(p -> p.sound(SoundType.GRAVEL))
         .transform(shovel())
         .lang("Wall Plaster")
+        .simpleItem()
         .register();
 
     static {

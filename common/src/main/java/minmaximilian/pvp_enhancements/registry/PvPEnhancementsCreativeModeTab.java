@@ -1,5 +1,7 @@
 package minmaximilian.pvp_enhancements.registry;
 
+import static minmaximilian.pvp_enhancements.PvPEnhancements.REGISTRATE;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 
@@ -17,7 +20,6 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
-import minmaximilian.pvp_enhancements.PvPEnhancements;
 import minmaximilian.pvp_enhancements.multiloader.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -59,7 +61,8 @@ public class PvPEnhancementsCreativeModeTab {
         }
     }
 
-    public static final class RegistrateDisplayItemsGenerator implements CreativeModeTab.DisplayItemsGenerator {
+    public static final class RegistrateDisplayItemsGenerator implements
+        CreativeModeTab.DisplayItemsGenerator {
 
         private final Tabs tab;
 
@@ -67,23 +70,34 @@ public class PvPEnhancementsCreativeModeTab {
             this.tab = tab;
         }
 
-        private static List<ItemOrdering> makeOrderings() {
-            List<ItemOrdering> orderings = new ReferenceArrayList<>();
+        private static Predicate<Item> makeExclusionPredicate() {
+            Set<Item> exclusions = new ReferenceOpenHashSet<>();
 
-            Map<ItemProviderEntry<?>, ItemProviderEntry<?>> simpleBeforeOrderings = Map.of(
+            List<ItemProviderEntry<?>> simpleExclusions = List.of(
+                //AllBlocks.REFINED_RADIANCE_CASING // just as an example
             );
 
-            simpleBeforeOrderings.forEach((entry, otherEntry) -> {
-                orderings.add(ItemOrdering.before(entry.asItem(), otherEntry.asItem()));
-            });
+            for (ItemProviderEntry<?> entry : simpleExclusions) {
+                exclusions.add(entry.asItem());
+            }
 
-            return orderings;
+            return (item) -> exclusions.contains(item) || item instanceof SequencedAssemblyItem;
         }
 
         private static Function<Item, ItemStack> makeStackFunc() {
             Map<Item, Function<Item, ItemStack>> factories = new Reference2ReferenceOpenHashMap<>();
 
             Map<ItemProviderEntry<?>, Function<Item, ItemStack>> simpleFactories = Map.of(
+                /*AllItems.COPPER_BACKTANK, item -> {
+                    ItemStack stack = new ItemStack(item);
+                    stack.getOrCreateTag().putInt("Air", BacktankUtil.maxAirWithoutEnchants());
+                    return stack;
+                },
+                AllItems.NETHERITE_BACKTANK, item -> {
+                    ItemStack stack = new ItemStack(item);
+                    stack.getOrCreateTag().putInt("Air", BacktankUtil.maxAirWithoutEnchants());
+                    return stack;
+                }*/
             );
 
             simpleFactories.forEach((entry, factory) -> {
@@ -103,6 +117,7 @@ public class PvPEnhancementsCreativeModeTab {
             Map<Item, TabVisibility> visibilities = new Reference2ObjectOpenHashMap<>();
 
             Map<ItemProviderEntry<?>, TabVisibility> simpleVisibilities = Map.of(
+                //AllItems.BLAZE_CAKE_BASE, TabVisibility.SEARCH_TAB_ONLY
             );
 
             simpleVisibilities.forEach((entry, factory) -> {
@@ -118,32 +133,6 @@ public class PvPEnhancementsCreativeModeTab {
             };
         }
 
-        @ExpectPlatform
-        private static boolean isInCreativeTab(RegistryEntry<?> entry, ResourceKey<CreativeModeTab> tab) {
-            throw new AssertionError();
-        }
-
-        private static void applyOrderings(List<Item> items, List<ItemOrdering> orderings) {
-            for (ItemOrdering ordering : orderings) {
-                int anchorIndex = items.indexOf(ordering.anchor());
-                if (anchorIndex != -1) {
-                    Item item = ordering.item();
-                    int itemIndex = items.indexOf(item);
-                    if (itemIndex != -1) {
-                        items.remove(itemIndex);
-                        if (itemIndex < anchorIndex) {
-                            anchorIndex--;
-                        }
-                    }
-                    if (ordering.type() == ItemOrdering.Type.AFTER) {
-                        items.add(anchorIndex + 1, item);
-                    } else {
-                        items.add(anchorIndex, item);
-                    }
-                }
-            }
-        }
-
         private static void outputAll(CreativeModeTab.Output output, List<Item> items,
             Function<Item, ItemStack> stackFunc, Function<Item, TabVisibility> visibilityFunc) {
             for (Item item : items) {
@@ -151,24 +140,15 @@ public class PvPEnhancementsCreativeModeTab {
             }
         }
 
-        private static Predicate<Item> makeExclusionPredicate() {
-            Set<Item> exclusions = new ReferenceOpenHashSet<>();
-
-            List<ItemProviderEntry<?>> simpleExclusions = List.of(
-                //AllBlocks.REFINED_RADIANCE_CASING // just as an example
-            );
-
-            for (ItemProviderEntry<?> entry : simpleExclusions) {
-                exclusions.add(entry.asItem());
-            }
-
-            return (item) -> exclusions.contains(item);
+        @ExpectPlatform
+        private static boolean isInCreativeTab(RegistryEntry<?> entry, ResourceKey<CreativeModeTab> tab) {
+            throw new AssertionError();
         }
 
+
         @Override
-        public void accept(CreativeModeTab.ItemDisplayParameters pParameters, CreativeModeTab.Output output) {
-            Predicate<Item> exclusionPredicate = makeExclusionPredicate();
-            List<ItemOrdering> orderings = makeOrderings();
+        public void accept(CreativeModeTab.ItemDisplayParameters pParameters,
+            CreativeModeTab.Output output) {
             Function<Item, ItemStack> stackFunc = makeStackFunc();
             Function<Item, TabVisibility> visibilityFunc = makeVisibilityFunc();
             ResourceKey<CreativeModeTab> tab = this.tab.getKey();
@@ -179,19 +159,17 @@ public class PvPEnhancementsCreativeModeTab {
                     .getModel(new ItemStack(item), null, null, 0).isGui3d(),
                 () -> () -> item -> false // don't crash servers
             );
+            items.addAll(collectItems(tab, is3d, true));
+            items.addAll(collectBlocks(tab));
+            items.addAll(collectItems(tab, is3d, false));
 
-            items.addAll(collectItems(tab, is3d, true, exclusionPredicate));
-            items.addAll(collectBlocks(tab, exclusionPredicate));
-            items.addAll(collectItems(tab, is3d, false, exclusionPredicate));
-
-            applyOrderings(items, orderings);
             outputAll(output, items, stackFunc, visibilityFunc);
         }
 
-        private List<Item> collectBlocks(ResourceKey<CreativeModeTab> tab, Predicate<Item> exclusionPredicate) {
+        private List<Item> collectBlocks(ResourceKey<CreativeModeTab> tab) {
             List<Item> items = new ReferenceArrayList<>();
-            for (RegistryEntry<Block> entry : PvPEnhancements.REGISTRATE.getAll(Registries.BLOCK)) {
-                if (!isInCreativeTab(entry, tab)) {
+            for (RegistryEntry<Block> entry : REGISTRATE.getAll(Registries.BLOCK)) {
+                if (isInCreativeTab(entry, tab)) {
                     continue;
                 }
                 Item item = entry.get()
@@ -199,20 +177,18 @@ public class PvPEnhancementsCreativeModeTab {
                 if (item == Items.AIR) {
                     continue;
                 }
-                if (!exclusionPredicate.test(item)) {
-                    items.add(item);
-                }
+                items.add(item);
             }
             items = new ReferenceArrayList<>(new ReferenceLinkedOpenHashSet<>(items));
             return items;
         }
 
-        private List<Item> collectItems(ResourceKey<CreativeModeTab> tab, Predicate<Item> is3d, boolean special,
-            Predicate<Item> exclusionPredicate) {
+        private List<Item> collectItems(ResourceKey<CreativeModeTab> tab, Predicate<Item> is3d,
+            boolean special) {
             List<Item> items = new ReferenceArrayList<>();
 
-            for (RegistryEntry<Item> entry : PvPEnhancements.REGISTRATE.getAll(Registries.ITEM)) {
-                if (!isInCreativeTab(entry, tab)) {
+            for (RegistryEntry<Item> entry : REGISTRATE.getAll(Registries.ITEM)) {
+                if (isInCreativeTab(entry, tab)) {
                     continue;
                 }
                 Item item = entry.get();
@@ -222,32 +198,12 @@ public class PvPEnhancementsCreativeModeTab {
                 if (is3d.test(item) != special) {
                     continue;
                 }
-                if (!exclusionPredicate.test(item)) {
-                    items.add(item);
-                }
+                items.add(item);
             }
             return items;
-        }
-
-        private record ItemOrdering(Item item, Item anchor, ItemOrdering.Type type) {
-
-            public static ItemOrdering before(Item item, Item anchor) {
-                return new ItemOrdering(item, anchor, ItemOrdering.Type.BEFORE);
-            }
-
-            public static ItemOrdering after(Item item, Item anchor) {
-                return new ItemOrdering(item, anchor, ItemOrdering.Type.AFTER);
-            }
-
-            public enum Type {
-                BEFORE,
-                AFTER;
-            }
         }
     }
 
     public record TabInfo(ResourceKey<CreativeModeTab> key, CreativeModeTab tab) {
-
     }
 }
-

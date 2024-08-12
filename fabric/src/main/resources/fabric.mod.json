@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "maxs_pvp_enhancements",
+  "id": "reclaim",
   "version": "${version}",
-  "name": "Max's PvP Enhancements",
-  "description": "Max's PvP Enhancements, set to make PvP as an event to look forwards to and reduce sadness after destruction.",
+  "name": "Reclaim",
+  "description": "Reclaim, set to make PvP as an event to look forwards to and reduce sadness after destruction.",
   "authors": [
     "minMaximilian"
   ],
@@ -19,15 +19,15 @@
       "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     ],
     "main": [
-      "minmaximilian.pvp_enhancements.fabric.PvPEnhancementsImpl"
+      "minmaximilian.reclaim.fabric.ReclaimImpl"
     ],
     "fabric-datagen": [
-      "minmaximilian.pvp_enhancements.data.fabric.DataGenFabric"
+      "minmaximilian.reclaim.data.fabric.DataGenFabric"
     ]
   },
   "mixins": [
-    "maxs_pvp_enhancements.mixins.json",
-    "maxs_pvp_enhancements-common.mixins.json"
+    "reclaim.mixins.json",
+    "reclaim-common.mixins.json"
   ],
   "depends": {
     "minecraft": "${minecraft_version}",

@@ -12,4 +12,4 @@ include("common")
 include("fabric")
 include("forge")
 
-rootProject.name = "maxs_pvp_enhancements"
+rootProject.name = "reclaim"

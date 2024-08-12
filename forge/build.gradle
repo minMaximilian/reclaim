@@ -82,8 +82,8 @@ processResources {
 loom {
     forge {
         mixinConfig(
-            "maxs_pvp_enhancements-common.mixins.json",
-            "maxs_pvp_enhancements.mixins.json"
+            "reclaim-common.mixins.json",
+            "reclaim.mixins.json"
         )
     }
 }

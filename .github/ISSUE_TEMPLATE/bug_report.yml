@@ -1,5 +1,5 @@
 name: Bug Report
-description: Create a bug report to help us improve Max's PvP Enhancements
+description: Create a bug report to help us improve Reclaim
 labels: [ "type: bug" ]
 body:
     -   type: textarea
@@ -75,4 +75,4 @@ body:
             required: false
     -   type: markdown
         attributes:
-            value: "Thank you for taking the time to make this suggestion and help improve Max's PvP Enhancements!"
+            value: "Thank you for taking the time to make this suggestion and help improve Reclaim!"

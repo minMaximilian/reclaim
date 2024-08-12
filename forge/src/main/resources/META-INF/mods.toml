@@ -4,23 +4,23 @@ loaderVersion = "[43,)"
 license = "LGPL"
 
 [[mods]]
-modId = "maxs_pvp_enhancements"
+modId = "reclaim"
 version = "${version}"
-displayName = "Max's PvP Enhancements"
+displayName = "Reclaim"
 authors = "github.com/minMaximilian"
 description = '''
-Max's PvP Enhancements, set to make PvP as an event to look forwards to and reduce sadness after destruction.
+Reclaim, set to make PvP as an event to look forwards to and reduce sadness after destruction.
 '''
 #logoFile = ""
 
-[[dependencies.maxs_pvp_enhancements]]
+[[dependencies.reclaim]]
 modId = "forge"
 mandatory = true
 versionRange = "[43,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.maxs_pvp_enhancements]]
+[[dependencies.reclaim]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.19.2,)"

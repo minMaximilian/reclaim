@@ -1,12 +1,12 @@
 name: Suggestion
-description: Suggest something that would improve Max's PvP Enhancements
+description: Suggest something that would improve Reclaim
 labels: [ "type: suggestion" ]
 body:
     -   type: textarea
         attributes:
             label: Describe the Suggestion
             description: >
-                What should we add or change to make Max's PvP Enhancements better?
+                What should we add or change to make Reclaim better?
         validations:
             required: true
     -   type: textarea
@@ -23,4 +23,4 @@ body:
             required: false
     -   type: markdown
         attributes:
-            value: "Thank you for taking the time to make this suggestion and help improve Max's PvP Enhancements!"
+            value: "Thank you for taking the time to make this suggestion and help improve Reclaim!"

@@ -19,9 +19,9 @@ public class EntityEvents {
 
         });
     public static final Event<ItemDespawn> ITEM_DESPAWN_EVENT = EventFactory.createArrayBacked(ItemDespawn.class,
-        callbacks -> (itemEntity) -> {
+        callbacks -> (itemEntity, pickupDelay) -> {
             for (ItemDespawn callback : callbacks) {
-                if (callback.onEntityAboutToDespawn(itemEntity)) {
+                if (callback.onEntityAboutToDespawn(itemEntity, pickupDelay)) {
                     return true;
                 }
             }
@@ -38,6 +38,6 @@ public class EntityEvents {
     @FunctionalInterface
     public interface ItemDespawn {
 
-        boolean onEntityAboutToDespawn(ItemEntity itemEntity);
+        boolean onEntityAboutToDespawn(ItemEntity itemEntity, int pickupDelay);
     }
 }

@@ -1,11 +1,10 @@
 package minmaximilian.pvp_enhancements.forge;
 
 import minmaximilian.pvp_enhancements.PvPEnhancementsCommonEvents;
-import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
@@ -22,15 +21,7 @@ public class PvPEnhancementsCommonEventsImpl {
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onChunkUnload);
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onRegisterCommands);
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onLightningStrike);
-        forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onItemExpiry);
         forgeEventBus.addListener(PvPEnhancementsCommonEventsImpl::onBlockPlace);
-    }
-
-    public static void onItemExpiry(ItemExpireEvent event) {
-        if (event.getEntity().getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get()) {
-            event.setCanceled(true);
-            event.getEntity().setUnlimitedLifetime();
-        }
     }
 
     public static void onServerStarting(LevelEvent.Load event) {

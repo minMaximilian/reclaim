@@ -8,7 +8,8 @@
     "ExplosionMixin",
     "FireBlockMixin",
     "ItemEntityMixin",
-    "LightningBoltMixin"
+    "LightningBoltMixin",
+    "PickupDelayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

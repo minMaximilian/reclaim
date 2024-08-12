@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.brigadier.CommandDispatcher;
 
+import minmaximilian.pvp_enhancements.item.PvPEnhancementsItems;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleBlockPlacement;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleChunkLoading;
 import minmaximilian.pvp_enhancements.regen.handlers.HandleCommandRegistration;
@@ -16,6 +17,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,6 +25,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public class PvPEnhancementsCommonEvents {
+
+    public static boolean onItemDespawn(ItemEntity itemEntity, int pickupDelay) {
+        if (itemEntity.getItem().getItem() == PvPEnhancementsItems.HEPHAESTUS_BAG.get() && pickupDelay != 32767) {
+            itemEntity.setUnlimitedLifetime();
+            return false;
+        }
+        return true;
+    }
 
     public static void onExplosion(Level level, List<BlockPos> blockPosList, Explosion explosion) {
         HandleExplosion.handleExplosion(level, blockPosList, explosion);

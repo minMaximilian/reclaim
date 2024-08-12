@@ -6,7 +6,9 @@
   "client": [
   ],
   "mixins": [
-    "FireBlockMixin"
+    "FireBlockMixin",
+    "ItemEntityMixin",
+    "PickupDelayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

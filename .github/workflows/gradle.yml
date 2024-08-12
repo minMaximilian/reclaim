@@ -52,12 +52,12 @@ jobs:
                         loom-cache
 
             -   name: Run Data Gen
-                uses: gradle/gradle-build-action@v2
+                uses: gradle/gradle-build-action@v3
                 with:
                     arguments: runDatagen
 
             -   name: Build
-                uses: gradle/gradle-build-action@v2
+                uses: gradle/gradle-build-action@v3
                 with:
                     arguments: build
 
@@ -66,7 +66,7 @@ jobs:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 if: github.event_name == 'push' && env.GITHUB_TOKEN != ''
                 continue-on-error: true
-                uses: gradle/gradle-build-action@v2
+                uses: gradle/gradle-build-action@v3
                 with:
                     arguments: publishMavenJavaPublicationToGitHubPackagesRepository
 
@@ -75,7 +75,7 @@ jobs:
                     MAVEN_USER: ${{ secrets.MAVEN_USER }}
                     MAVEN_ACCESS_TOKEN: ${{ secrets.MAVEN_ACCESS_TOKEN }}
                 if: github.event_name == 'push' && env.MAVEN_USER != '' && env.MAVEN_ACCESS_TOKEN != ''
-                uses: gradle/gradle-build-action@v2
+                uses: gradle/gradle-build-action@v3
                 with:
                     arguments: |
                         publishMavenJavaPublicationToRealRobotixMavenRepository
